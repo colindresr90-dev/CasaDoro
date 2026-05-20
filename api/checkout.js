@@ -1,7 +1,12 @@
 import Stripe from 'stripe';
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || process.env.VITE_STRIPE_SECRET_KEY;
-const stripe = new Stripe(stripeSecretKey);
+const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+
+if (!stripeSecretKey) {
+  console.error('[checkout] STRIPE_SECRET_KEY is not set in environment variables.');
+}
+
+const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
 
 export default async function handler(req, res) {
   // CORS Headers for safety
@@ -20,6 +25,13 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  // Guard: Stripe not configured
+  if (!stripe) {
+    return res.status(500).json({
+      error: 'El sistema de pagos no está configurado en este servidor. Por favor contacte al administrador.'
+    });
   }
 
   try {
