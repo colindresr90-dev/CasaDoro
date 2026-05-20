@@ -87,6 +87,7 @@
   line-height: 1;
   letter-spacing: var(--tracking-display);
   font-weight: var(--weight-regular);
+  white-space: nowrap; /* Prevent "Casa d'Oro" from wrapping */
 }
 
 .est {
@@ -98,6 +99,7 @@
   color: #E8D5B0;     /* Dorado más claro para visibilidad */
   opacity: 1;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .desktopLinks {
@@ -222,6 +224,17 @@
   
   .menuToggle {
     display: flex;
+  }
+}
+
+@media (max-width: 576px) {
+  .wordmark {
+    font-size: 1.8rem;
+  }
+  .est {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    margin-top: 2px;
   }
 }
 
