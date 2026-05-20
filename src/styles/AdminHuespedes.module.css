@@ -1,0 +1,257 @@
+/* Casa d'Oro Admin Guests Page CSS */
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  gap: 24px;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filterBtn {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--admin-text-dim);
+  background: transparent;
+  padding: 10px 20px;
+  border: 1px solid rgba(201, 169, 110, 0.2);
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filterBtn:hover {
+  border-color: #1A1A1A;
+  color: #1A1A1A;
+}
+
+.filterBtnActive {
+  background: #1A1A1A !important;
+  color: #C9A96E !important;
+  border-color: #1A1A1A !important;
+}
+
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 320px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  color: var(--admin-text-dim);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.searchInput {
+  width: 100%;
+  background: #ffffff;
+  border: 0.5px solid var(--admin-border);
+  padding: 12px 16px 12px 44px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--admin-text);
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.searchInput:focus {
+  border-color: var(--admin-gold);
+  box-shadow: 0 4px 12px rgba(201, 169, 110, 0.05);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+/* Modal components */
+.modalSplit {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 48px;
+}
+
+.modalProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid rgba(201, 169, 110, 0.1);
+  padding-right: 32px;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  background: var(--admin-gold-glow);
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  color: var(--admin-gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-style: italic;
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.profileName {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--admin-text);
+  margin: 0 0 6px 0;
+}
+
+.profileTier {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  color: #C9A96E;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  background: rgba(201, 169, 110, 0.08);
+  padding: 4px 12px;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.profileContact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  text-align: left;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #666;
+  word-break: break-all;
+}
+
+.contactItem svg {
+  flex-shrink: 0;
+  color: var(--admin-gold);
+}
+
+.historySection {
+  display: flex;
+  flex-direction: column;
+}
+
+.historyTitle {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 300;
+  margin: 0 0 20px 0;
+  color: var(--admin-text);
+  border-bottom: 0.5px solid rgba(229, 222, 208, 0.6);
+  padding-bottom: 8px;
+}
+
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.historyItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border: 0.5px solid var(--admin-border);
+  transition: all 0.3s ease;
+}
+
+.historyItem:hover {
+  background: var(--admin-gold-glow);
+  border-color: var(--admin-gold);
+}
+
+.historySuite {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: var(--admin-text);
+}
+
+.historyDates {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--admin-text-dim);
+  margin-top: 4px;
+}
+
+.historyPrice {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--admin-text);
+  text-align: right;
+}
+
+.historyStatus {
+  font-family: var(--font-body);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+@media (max-width: 1024px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchWrapper {
+    width: 100%;
+  }
+  .modalSplit {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .modalProfile {
+    border-right: none;
+    border-bottom: 1px solid rgba(201, 169, 110, 0.1);
+    padding-right: 0;
+    padding-bottom: 32px;
+  }
+}
+
+@media (max-width: 576px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

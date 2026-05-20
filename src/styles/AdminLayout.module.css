@@ -1,0 +1,707 @@
+/* Casa d'Oro Admin Layout - Lodify Inspired Redesign */
+
+.shell {
+  /* Admin Design Tokens - Minimalist Luxury */
+  --admin-bg: #FDFCFB;
+  --admin-sidebar: #FDFCFB;
+  --admin-card: #FDFCFB;
+  --admin-border: #E5DED0;
+  --admin-border-md: rgba(229, 222, 208, 0.6);
+  --admin-border-act: #C9A96E;
+  --admin-text: #1A1A1A;
+  --admin-text-dim: #8A857D;
+  --admin-gold: #C9A96E;
+  --admin-gold-dim: #a68b5a;
+  --admin-gold-glow: rgba(201, 169, 110, 0.05);
+
+  display: grid !important;
+  grid-template-columns: 280px 1fr !important;
+  min-height: 100vh;
+  background: var(--admin-bg) !important;
+  font-family: var(--font-body);
+  color: var(--admin-text) !important;
+  width: 100%;
+}
+
+.mainArea {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow-x: hidden;
+  background-color: var(--admin-bg) !important;
+  color: var(--admin-text) !important;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1 !important;
+  padding: 40px !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  width: 100% !important;
+  display: block !important;
+}
+
+.contentFull {
+  flex: 1 !important;
+  width: 100% !important;
+  display: block !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Sidebar */
+.sidebar {
+  background: var(--admin-sidebar) !important;
+  border-right: 0.5px solid var(--admin-border);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  width: 280px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebarBrand {
+  padding: 32px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandMark {
+  width: 42px;
+  height: 42px;
+  background: #1A1A1A;
+  border: 1px solid rgba(201, 169, 110, 0.3);
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--admin-gold);
+  font-size: 20px;
+  position: relative;
+}
+
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandName {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--admin-text);
+  line-height: 1;
+}
+
+.brandSub {
+  font-size: 13px;
+  color: var(--admin-gold-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.sidebarNav {
+  flex: 1;
+  padding: 0 16px;
+}
+
+.navLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--admin-text-dim) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 32px 12px 12px;
+  font-family: var(--font-smallcaps);
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #666;
+  font-size: 13px;
+  font-weight: 400;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 4px;
+  border-left: 2px solid transparent;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.navItem:hover {
+  background: rgba(201, 169, 110, 0.04);
+  color: var(--admin-text);
+  padding-left: 24px;
+}
+
+.navActive {
+  background: rgba(201, 169, 110, 0.06);
+  color: var(--admin-text) !important;
+  border-left: 2px solid var(--admin-gold) !important;
+  font-weight: 500;
+}
+
+
+.navIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.85;
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.2s ease;
+}
+
+.navIcon svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.navActive .navIcon {
+  opacity: 1;
+}
+
+.navBadge {
+  margin-left: auto;
+  background: var(--admin-gold);
+  color: white;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 0;
+  font-weight: 700;
+}
+
+.sidebarFooter {
+  padding: 24px;
+  border-top: 1px solid #eae6e1;
+}
+
+.sidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebarUserAvatar {
+  width: 36px;
+  height: 36px;
+  background: #eae6e1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.sidebarUserName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.sidebarUserRole {
+  font-size: 13px;
+  color: var(--admin-text-dim);
+  font-weight: 500;
+}
+
+/* Header */
+.header {
+  height: 80px;
+  background: var(--admin-sidebar);
+  border-bottom: 0.5px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menuToggleBtn {
+  display: none !important;
+}
+
+.backBtn {
+  background: none;
+  border: 1px solid #eae6e1;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.backBtn:hover {
+  background: #f8f9fa;
+  border-color: #d1ccca;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: var(--admin-text-dim);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bcLink {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.bcLink:hover {
+  color: var(--admin-gold);
+}
+
+.bcSep {
+  margin: 0 12px;
+  color: var(--admin-border-md);
+  font-weight: 400;
+}
+
+.bcCurrent {
+  color: var(--admin-text);
+  font-weight: 800;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.headerSearch {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.headerSearch svg {
+  position: absolute;
+  left: 0;
+  color: #999;
+  width: 14px;
+  height: 14px;
+}
+
+.headerSearchInput {
+  background: transparent;
+  border: none;
+  border-bottom: 0.5px solid var(--admin-border);
+  padding: 8px 8px 8px 24px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  width: 200px;
+  outline: none;
+  transition: all 0.3s ease;
+  color: var(--admin-text);
+}
+
+.headerSearchInput:focus {
+  border-bottom-color: var(--admin-text);
+  width: 240px;
+}
+
+.headerBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--admin-text-dim);
+  position: relative;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.headerBtn:hover {
+  color: var(--admin-text);
+  background: #f5f4f0;
+}
+
+.headerBadge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background: #c17a4a; /* Terracotta for contrast */
+  color: white;
+  font-size: 10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%; /* Purely for icons, sharp elsewhere */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  font-weight: 800;
+}
+
+.headerUser {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-left: 12px;
+  border-left: 1px solid #eae6e1;
+}
+
+.headerUserAvatar {
+  width: 32px;
+  height: 32px;
+  background: #C9A96E;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.headerUserInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerUserName {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--admin-text);
+}
+
+.headerUserRole {
+  font-size: 12px;
+  color: var(--admin-text-dim);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+
+/* ── SHARED COMPONENTS ── */
+.card {
+  background: var(--admin-card) !important;
+  border: 0.5px solid var(--admin-border) !important;
+  padding: 32px !important;
+  position: relative !important;
+  transition: all 0.4s ease !important;
+  border-radius: 0 !important;
+}
+
+.pageTitle {
+  font-family: var(--font-display) !important;
+  font-size: 42px !important;
+  font-weight: 300 !important;
+  font-style: italic !important;
+  color: var(--admin-text) !important;
+  margin: 0 0 8px 0 !important;
+  letter-spacing: -0.01em !important;
+  line-height: 1.1 !important;
+}
+
+.pageEyebrow {
+  font-family: var(--font-smallcaps) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.4em !important;
+  color: var(--admin-gold) !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  margin-bottom: 6px !important;
+  display: block !important;
+}
+
+/* ── TABLE SYSTEM ── */
+.tableContainer {
+  background: var(--admin-card) !important;
+  border: 1px solid rgba(201, 169, 110, 0.1) !important;
+  overflow: hidden !important;
+  margin-top: 20px !important;
+}
+
+.table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.tableHead th {
+  padding: 24px !important;
+  text-align: left !important;
+  font-family: var(--font-smallcaps) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.25em !important;
+  color: var(--admin-text-dim) !important;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.1) !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+.tableRow td {
+  padding: 22px 24px !important;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.05) !important;
+  vertical-align: middle !important;
+  transition: background 0.2s ease !important;
+}
+
+.tableRow:hover td {
+  background: rgba(201, 169, 110, 0.02) !important;
+}
+
+/* Table Content Utils */
+.tdMain {
+  font-family: var(--font-display) !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  color: var(--admin-text) !important;
+  margin-bottom: 2px !important;
+}
+
+.tdSub {
+  font-family: var(--font-body) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  color: var(--admin-text-dim) !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+}
+
+.tdText {
+  font-family: var(--font-body) !important;
+  font-size: 13px !important;
+  font-weight: 300 !important;
+  color: #666 !important;
+}
+
+.tdPrice {
+  font-family: var(--font-display) !important;
+  font-size: 22px !important;
+  font-weight: 300 !important;
+  color: var(--admin-text) !important;
+  font-style: italic !important;
+}
+
+.tableAction {
+  font-family: var(--font-smallcaps) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.3em !important;
+  color: var(--admin-gold) !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  padding: 8px 16px !important;
+  border: 1px solid rgba(201, 169, 110, 0.2) !important;
+  transition: all 0.3s ease !important;
+  display: inline-block !important;
+}
+
+.tableAction:hover {
+  background: var(--admin-gold) !important;
+  color: white !important;
+  border-color: var(--admin-gold) !important;
+}
+
+/* ── BADGES ── */
+.badge {
+  font-family: var(--font-body) !important;
+  font-size: 11px !important;
+  font-variant: small-caps !important;
+  letter-spacing: 0.1em !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  background: transparent !important;
+  padding: 0 !important;
+  font-weight: 500 !important;
+}
+
+.badgeterminado, .badgeconfirmada, .badgecompletada {
+  color: #C9A96E !important;
+}
+
+.badgecheck_in {
+  color: #5C8275 !important;
+}
+
+.badgecheck_out {
+  color: #8A857D !important;
+}
+
+.badgependiente {
+  color: #8A857D !important;
+}
+
+.badgecancelada {
+  color: #B5A49D !important;
+}
+
+/* ── STAT CARDS ── */
+.statCard {
+  background: transparent !important;
+  border: 0.5px solid var(--admin-border) !important;
+  padding: 40px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+  border-radius: 0 !important;
+  transition: all 0.4s ease !important;
+}
+
+.statCard:hover {
+  border-color: rgba(201, 169, 110, 0.4) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.02) !important;
+}
+
+.statCardLabel {
+  font-family: var(--font-smallcaps) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.2em !important;
+  color: var(--admin-text-dim) !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+.statCardNum {
+  font-family: var(--font-display) !important;
+  font-size: 54px !important;
+  font-weight: 300 !important;
+  color: var(--admin-text) !important;
+  line-height: 1 !important;
+  letter-spacing: -0.02em !important;
+  font-style: italic !important;
+}
+
+.statCardNumGold {
+  font-family: var(--font-display) !important;
+  font-size: 54px !important;
+  font-weight: 300 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.02em !important;
+  font-style: italic !important;
+  color: var(--admin-gold) !important;
+}
+
+.statCardSub {
+  font-family: var(--font-body) !important;
+  font-size: 12px !important;
+  color: #999 !important;
+  font-weight: 300 !important;
+  margin-top: 4px !important;
+}
+
+.sidebarOverlay {
+  display: none;
+}
+
+/* ── RESPONSIVE BACK-OFFICE ── */
+@media (max-width: 992px) {
+  .shell {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    height: 100vh !important;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 1050 !important;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebarOpen {
+    transform: translateX(0) !important;
+  }
+
+  /* Overlay backdrop */
+  .sidebarOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 5, 0.35);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1040;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .sidebarOverlayVisible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .header {
+    padding: 0 20px !important;
+    height: 70px !important;
+  }
+
+  .content {
+    padding: 24px 16px !important;
+  }
+
+  /* Table responsive scroll */
+  .tableContainer {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 750px !important;
+  }
+  
+  .headerSearch {
+    display: none !important; /* Hide search in header on mobile to save space */
+  }
+
+  .menuToggleBtn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: 1px solid #eae6e1;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #666;
+    transition: all 0.25s ease;
+  }
+
+  .menuToggleBtn:hover {
+    background: #f8f9fa;
+    border-color: #d1ccca;
+  }
+}
+
+

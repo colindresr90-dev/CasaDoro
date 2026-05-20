@@ -1,0 +1,985 @@
+/* Base container for the entire account page */
+.page {
+  min-height: 100vh;
+  background-color: #0a0805; /* Fallback */
+  background-image: 
+    linear-gradient(45deg, 
+      rgba(201, 168, 76, 0.02) 0%, rgba(201, 168, 76, 0.02) 2%,
+      rgba(201, 168, 76, 0.05) 2%, rgba(201, 168, 76, 0.05) 5%,
+      rgba(201, 168, 76, 0.03) 5%, rgba(201, 168, 76, 0.03) 39%,
+      rgba(201, 168, 76, 0.01) 39%, rgba(201, 168, 76, 0.01) 41%,
+      rgba(201, 168, 76, 0.07) 41%, rgba(201, 168, 76, 0.07) 69%,
+      rgba(201, 168, 76, 0.04) 69%, rgba(201, 168, 76, 0.04) 79%,
+      rgba(201, 168, 76, 0.09) 79%, rgba(201, 168, 76, 0.09) 87%,
+      rgba(201, 168, 76, 0.04) 87%, rgba(201, 168, 76, 0.04) 100%
+    ),
+    linear-gradient(45deg, 
+      rgba(245, 240, 232, 0.01) 0%, rgba(245, 240, 232, 0.01) 12.5%,
+      rgba(245, 240, 232, 0.03) 12.5%, rgba(245, 240, 232, 0.03) 25%,
+      rgba(245, 240, 232, 0.01) 25%, rgba(245, 240, 232, 0.01) 37.5%,
+      rgba(245, 240, 232, 0.04) 37.5%, rgba(245, 240, 232, 0.04) 50%,
+      rgba(245, 240, 232, 0.03) 50%, rgba(245, 240, 232, 0.03) 62.5%,
+      rgba(245, 240, 232, 0.02) 62.5%, rgba(245, 240, 232, 0.02) 75%,
+      rgba(245, 240, 232, 0.03) 75%, rgba(245, 240, 232, 0.03) 87.5%,
+      rgba(245, 240, 232, 0.02) 87.5%, rgba(245, 240, 232, 0.02) 100%
+    ),
+    linear-gradient(177deg, #14100b, #0a0805);
+  color: #f5f0e8; /* Warm Cream */
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  padding-top: 100px; /* Leave space for navbar */
+}
+
+/* Custom Scrollbar for Webkit */
+.page::-webkit-scrollbar {
+  width: 6px;
+}
+
+.page::-webkit-scrollbar-track {
+  background: #0a0805;
+}
+
+.page::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.25);
+  border-radius: 3px;
+}
+
+.page::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 168, 76, 0.5);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bento Grid Container */
+.bentoContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 8vw 120px 8vw;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Base style for Bento Cards (Glassmorphism) */
+.bentoCard {
+  background: rgba(10, 8, 5, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 168, 76, 0.08);
+  border-radius: 8px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* radial lighting layer */
+.bentoCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 0% 0%, rgba(201, 168, 76, 0.06) 0%, rgba(201, 168, 76, 0) 60%);
+  pointer-events: none;
+}
+
+.bentoCard:hover {
+  border-color: rgba(201, 168, 76, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* Bento grid column span helpers */
+.span2 {
+  grid-column: span 2;
+}
+
+.spanFull {
+  grid-column: span 3;
+}
+
+/* Eyebrow Label style */
+.cardEyebrow {
+  font-family: var(--font-smallcaps);
+  font-size: 13px;
+  font-weight: 500;
+  color: #c9a84c;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+  display: block;
+}
+
+/* Card 1: Perfil Styles */
+.cardPerfil {
+  justify-content: space-between;
+  min-height: 380px;
+}
+
+.heroName {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 4vw, 54px);
+  font-weight: 300;
+  color: #f5f0e8;
+  line-height: 1.1;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.01em;
+}
+
+.heroEmail {
+  font-size: 15px;
+  font-weight: 300;
+  color: #f5f0e8;
+  opacity: 0.4;
+  margin: 0 0 32px 0;
+  letter-spacing: 0.05em;
+}
+
+.loyaltyBadgeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 32px;
+}
+
+.loyaltyLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: #f5f0e8;
+  opacity: 0.3;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.loyaltyBadge {
+  font-family: var(--font-display);
+  font-size: 25px;
+  font-weight: 300;
+  color: #c9a84c;
+}
+
+/* Sign out button */
+.signOutBtn {
+  font-family: var(--font-smallcaps);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: #f5f0e8;
+  opacity: 0.5;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: opacity 0.4s ease, color 0.4s ease;
+  text-transform: uppercase;
+  display: inline-flex;
+  flex-direction: column;
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.signOutBtn::after {
+  content: '';
+  width: 0;
+  height: 1px;
+  background-color: #c9a84c;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 4px;
+}
+
+.signOutBtn:hover {
+  opacity: 1;
+  color: #c9a84c;
+}
+
+.signOutBtn:hover::after {
+  width: 100%;
+}
+
+/* Card 2: Próxima Estancia Layouts */
+.cardProxima {
+  min-height: 380px;
+}
+
+.proximaLayout {
+  display: flex;
+  gap: 6%;
+  align-items: center;
+  height: 100%;
+}
+
+.proximaLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.proximaSuiteName {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 300;
+  color: #f5f0e8;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.proximaSuiteType {
+  font-size: 12px;
+  font-weight: 500;
+  color: #c9a84c;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-top: -6px;
+}
+
+.proximaDetailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.proximaDetailGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.proximaDetailLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: #f5f0e8;
+  opacity: 0.35;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.proximaDetailValue {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: #f5f0e8;
+  font-weight: 300;
+  line-height: 1.3;
+}
+
+.proximaDetailValueNoches {
+  font-size: 15px;
+  color: #f5f0e8;
+  opacity: 0.7;
+  font-weight: 300;
+}
+
+.proximaDetailValueTotal {
+  font-family: var(--font-display);
+  font-size: 23px;
+  color: #c9a84c;
+  font-weight: 400;
+}
+
+.statusWrapper {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+}
+
+.proximaRight {
+  flex: 0 0 35%;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.proximaRight img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cardProxima:hover .proximaRight img {
+  transform: scale(1.05);
+}
+
+.proximaImgOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(10, 8, 5, 0) 45%, rgba(10, 8, 5, 0.5));
+  pointer-events: none;
+}
+
+/* Card 2 Fallback: Teaser Style */
+.cardTeaser {
+  min-height: 380px;
+  justify-content: center;
+}
+
+.teaserContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 90%;
+}
+
+.teaserTitle {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 300;
+  color: #f5f0e8;
+  margin: 0 0 16px 0;
+  line-height: 1.2;
+}
+
+.teaserText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(245, 240, 232, 0.6);
+  margin: 0 0 32px 0;
+  font-weight: 300;
+}
+
+/* Badges */
+.pillPendiente {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: #c9a84c;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  padding: 4px 12px;
+  text-transform: uppercase;
+  border-radius: 100px;
+  display: inline-block;
+}
+
+.pillConfirmada {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #0a0805;
+  background-color: #c9a84c;
+  padding: 4px 12px;
+  text-transform: uppercase;
+  border-radius: 100px;
+  display: inline-block;
+}
+
+.pillCancelada {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: #f5f0e8;
+  opacity: 0.4;
+  border: 1px solid rgba(245, 240, 232, 0.25);
+  padding: 4px 12px;
+  text-transform: uppercase;
+  border-radius: 100px;
+  display: inline-block;
+}
+
+/* Card 3: Preferencias Styles */
+.cardPreferencias {
+  min-height: 320px;
+}
+
+.prefList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.prefItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.05);
+  padding-bottom: 12px;
+}
+
+.prefItem:last-child {
+  border: none;
+  padding-bottom: 0;
+}
+
+.prefLabel {
+  font-size: 11px;
+  font-weight: 500;
+  color: #f5f0e8;
+  opacity: 0.35;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.prefValue {
+  font-family: var(--font-display);
+  font-size: 18px;
+  color: #c9a84c;
+  font-weight: 400;
+}
+
+/* Card 4: Actividad y Estadísticas Styles */
+.cardStats {
+  min-height: 320px;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 8px;
+}
+
+.statBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-right: 1px solid rgba(201, 168, 76, 0.08);
+}
+
+.statBox:nth-child(2) {
+  border-right: none;
+  padding-left: 8px;
+}
+
+.statVal {
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: #c9a84c;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.statLbl {
+  font-size: 11px;
+  font-weight: 500;
+  color: #f5f0e8;
+  opacity: 0.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.statBoxFull {
+  grid-column: span 2;
+  margin-top: 16px;
+  border-top: 1px solid rgba(201, 168, 76, 0.05);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statSuiteName {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: #f5f0e8;
+  font-weight: 400;
+}
+
+/* Card 5: Concierge / Acceso Rápido Styles */
+.cardConcierge {
+  min-height: 320px;
+}
+
+.conciergeLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.conciergeLink {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  color: #f5f0e8;
+  opacity: 0.7;
+  text-decoration: none;
+  padding: 12px 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(201, 168, 76, 0.04);
+  background: rgba(201, 168, 76, 0.01);
+  transition: all 0.4s ease;
+}
+
+.conciergeLink:hover {
+  opacity: 1;
+  color: #c9a84c;
+  border-color: rgba(201, 168, 76, 0.2);
+  background: rgba(201, 168, 76, 0.04);
+  transform: translateX(4px);
+}
+
+.linkArrow {
+  font-size: 14px;
+  transition: transform 0.4s ease;
+}
+
+.conciergeLink:hover .linkArrow {
+  transform: translateX(2px);
+}
+
+/* Card 6: Historial de Estancias (Ancho completo) */
+.cardHistorial {
+  margin-top: 16px;
+}
+
+.historialTitle {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 300;
+  color: #f5f0e8;
+  margin: 0 0 32px 0;
+}
+
+.reservacionesList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.reservacionRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.06);
+  transition: all 0.4s ease;
+}
+
+.reservacionRow:last-child {
+  border-bottom: none;
+}
+
+.reservacionRow:hover {
+  background-color: rgba(201, 168, 76, 0.02);
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.rowMainInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+}
+
+.rowThumbContainer {
+  width: 72px;
+  height: 54px;
+  overflow: hidden;
+  border-radius: 4px;
+  flex-shrink: 0;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+}
+
+.rowThumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reservacionRow:hover .rowThumb {
+  transform: scale(1.05);
+}
+
+.rowSuiteNameGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.rowSuiteName {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: #f5f0e8;
+  transition: color 0.4s ease;
+}
+
+.reservacionRow:hover .rowSuiteName {
+  color: #c9a84c;
+}
+
+.rowSuiteType {
+  font-size: 11px;
+  font-weight: 500;
+  color: #c9a84c;
+  opacity: 0.6;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.rowDatesGroup {
+  flex: 0 0 25%;
+  padding-left: 16px;
+}
+
+.rowDates {
+  font-size: 15px;
+  color: #f5f0e8;
+  opacity: 0.65;
+  font-weight: 300;
+}
+
+.rowNoches {
+  font-size: 13px;
+  color: #f5f0e8;
+  opacity: 0.4;
+  margin-top: 2px;
+  font-weight: 300;
+}
+
+.rowPriceGroup {
+  flex: 0 0 16%;
+  text-align: right;
+  padding-right: 24px;
+}
+
+.rowPrice {
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: #c9a84c;
+  font-weight: 400;
+}
+
+.rowStatusGroup {
+  flex-shrink: 0;
+  width: 120px;
+  text-align: right;
+}
+
+/* Empty Stays State inside history card */
+.emptyHistorial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 0;
+  text-align: center;
+}
+
+.emptyText {
+  font-size: 14px;
+  color: #f5f0e8;
+  opacity: 0.45;
+  margin-bottom: 24px;
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* Luxury Outline Button */
+.btnOutline {
+  font-family: var(--font-smallcaps);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  color: #c9a84c;
+  background-color: transparent;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  padding: 12px 28px;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+}
+
+.btnOutline:hover {
+  background-color: #c9a84c;
+  color: #0a0805;
+  border-color: #c9a84c;
+  transform: translateY(-1px);
+}
+
+/* ────────────────────────────────────────────────────────
+   ESTADOS DE CARGA Y ERROR
+   ──────────────────────────────────────────────────────── */
+.loadingContainer {
+  min-height: 100vh;
+  background-color: #0a0805;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #f5f0e8;
+  gap: 20px;
+}
+
+.loaderSpinner {
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(201, 168, 76, 0.1);
+  border-top: 2px solid #c9a84c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingText {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+.errorText {
+  font-size: 14px;
+  color: rgba(245, 240, 232, 0.6);
+  max-width: 400px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ────────────────────────────────────────────────────────
+   RESPONSIVIDAD (MOBILE & TABLET BREAKPOINTS)
+   ──────────────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .bentoGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .spanFull {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .bentoContainer {
+    padding: 30px 6vw 80px 6vw;
+  }
+
+  .bentoGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .span2, .spanFull {
+    grid-column: span 1;
+  }
+
+  .bentoCard {
+    padding: 28px;
+  }
+
+  .proximaLayout {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .proximaLeft {
+    order: 1;
+  }
+
+  .proximaRight {
+    order: 0;
+    flex: none;
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .proximaDetailsGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .reservacionRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  .reservacionRow:hover {
+    padding-left: 0;
+    padding-right: 0;
+    background-color: transparent;
+  }
+
+  .rowMainInfo {
+    width: 100%;
+  }
+
+  .rowDatesGroup {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .rowPriceGroup {
+    width: 100%;
+    text-align: left;
+    padding-right: 0;
+  }
+
+  .rowStatusGroup {
+    width: 100%;
+    text-align: left;
+  }
+}
+
+/* Cancellation Buttons — Next Stay Card */
+.cancelBtnTrigger {
+  font-family: var(--font-smallcaps);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: #ac1c29; /* Dark premium red */
+  background-color: transparent;
+  border: 1px solid rgba(172, 28, 41, 0.25);
+  padding: 8px 18px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.cancelBtnTrigger:hover {
+  background-color: rgba(172, 28, 41, 0.08);
+  border-color: #ac1c29;
+  color: #ef4444;
+  transform: translateY(-1px);
+}
+
+.cancelBtnConfirm {
+  font-family: var(--font-smallcaps);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: #f5f0e8;
+  background-color: #ac1c29;
+  border: 1px solid #ac1c29;
+  padding: 8px 18px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.cancelBtnConfirm:hover {
+  background-color: #76191d;
+  border-color: #76191d;
+  transform: translateY(-1px);
+}
+
+.cancelBtnCancel {
+  font-family: var(--font-smallcaps);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  color: rgba(245, 240, 232, 0.6);
+  background-color: transparent;
+  border: 1px solid rgba(245, 240, 232, 0.15);
+  padding: 8px 18px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-block;
+  margin-top: 8px;
+}
+
+.cancelBtnCancel:hover {
+  border-color: rgba(245, 240, 232, 0.4);
+  color: #f5f0e8;
+}
+
+/* Cancellation Buttons — Reservation History Rows */
+.rowCancelBtnTrigger {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: rgba(172, 28, 41, 0.7);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 0;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+  border-bottom: 1px dashed rgba(172, 28, 41, 0.3);
+}
+
+.rowCancelBtnTrigger:hover {
+  color: #ac1c29;
+  border-bottom-color: #ac1c29;
+}
+
+.rowCancelBtnConfirm {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: #f5f0e8;
+  background-color: #ac1c29;
+  border: 1px solid #ac1c29;
+  padding: 4px 8px;
+  text-transform: uppercase;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.rowCancelBtnConfirm:hover {
+  background-color: #76191d;
+  border-color: #76191d;
+}
+
+.rowCancelBtnCancel {
+  font-family: var(--font-smallcaps);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  color: rgba(245, 240, 232, 0.6);
+  background-color: transparent;
+  border: 1px solid rgba(245, 240, 232, 0.2);
+  padding: 4px 8px;
+  text-transform: uppercase;
+  border-radius: 1px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.rowCancelBtnCancel:hover {
+  border-color: rgba(245, 240, 232, 0.4);
+  color: #f5f0e8;
+}

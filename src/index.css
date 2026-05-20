@@ -1,0 +1,141 @@
+:root {
+  --text: var(--text-light);
+  --text-h: var(--text-light);
+  --bg: #0f0c08;
+  --border: rgba(201, 169, 110, 0.2);
+  --mono: ui-monospace, Consolas, monospace;
+  --container-width: 1440px;
+  --code-bg: #1f2028;
+  --accent: #c084fc;
+  --accent-bg: rgba(192, 132, 252, 0.15);
+  --accent-border: rgba(192, 132, 252, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow:
+    rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+
+  font: 18px/160% var(--font-body);
+  letter-spacing: var(--tracking-body);
+  color-scheme: dark;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: clip;
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
+/* Global Scrollbar Revert */
+* {
+  scrollbar-color: #c9a84c #0a0805;
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0805;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c9a84c;
+  border: 2px solid #0a0805;
+  border-radius: 10px;
+}
+
+/* Prevenir scroll-snap conflicts */
+* {
+  scroll-snap-type: none;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  /* overflow-x: hidden eliminado — trapa el scroll wheel en body */
+}
+
+#root {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-light);
+  color: var(--text-light);
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Cinematic reveal utilities for useScrollCinema */
+.reveal-up, .reveal-headline, .reveal-left, .reveal-right, .reveal-scale, .reveal-stagger > * {
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+.parallax-slow, .parallax-fast {
+  will-change: transform;
+}
+
+.draw-line-h, .draw-line-v {
+  will-change: transform;
+  transform-origin: left top;
+}
+
+.hover-trigger {
+  cursor: pointer;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-trigger:hover {
+  letter-spacing: 0.3em;
+  color: var(--color-gold);
+}
+
+code,
+.counter {
+  font-family: var(--mono);
+  display: inline-flex;
+  border-radius: 4px;
+  color: var(--text-h);
+}
+
+code {
+  font-size: 15px;
+  line-height: 135%;
+  padding: 4px 8px;
+  background: var(--code-bg);
+}
+
+/* Minimal resets for layout consistency */
+.suite-section {
+  margin: 0;
+  padding: 0;
+}

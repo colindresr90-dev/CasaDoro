@@ -1,0 +1,421 @@
+/* ══════════════════════════════════════════
+   LOGIN PAGE — Full screen glassmorphism
+   Casa d'Oro · El Tunco · Est. 1952
+══════════════════════════════════════════ */
+
+/* ── PAGE WRAPPER ── */
+.page {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 8vw;
+
+  /* Imagen de fondo + Gradiente atmosférico suave */
+  background: 
+    radial-gradient(
+      ellipse 110% 80% at 25% 10%,
+      rgba(193, 122, 74, 0.2) 0%,
+      rgba(122, 52, 16, 0.2) 12%,
+      rgba(27, 58, 75, 0.3) 38%,
+      rgba(13, 31, 40, 0.5) 65%,
+      rgba(6, 13, 18, 0.7) 100%
+    ),
+    url('/Log-in.png') no-repeat center center / cover;
+}
+
+/* Glow dorado suave en la base */
+.page::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 15%;
+  width: 400px;
+  height: 60%;
+  background: linear-gradient(
+    to bottom,
+    rgba(201, 169, 110, 0.15) 0%,
+    rgba(193, 122, 74, 0.05) 40%,
+    transparent 100%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── ELEMENTOS DE FONDO ── */
+
+/* ── LOGO Y QUOTE FLOTANTES ── */
+
+.floatingLogo {
+  position: absolute;
+  top: 5vh;
+  left: 5vw;
+  z-index: 10;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.floatingLogoMain {
+  font-family: var(--font-display);
+  font-size: 3rem; /* Más grande */
+  color: #FFFFFF; /* Blanco puro */
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.floatingLogoSub {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #FFFFFF; /* Cambiado a blanco para visibilidad */
+  text-transform: uppercase;
+  letter-spacing: 0.45em;
+  margin-top: 0.75rem;
+  opacity: 1; /* Opacidad total */
+}
+
+.floatingQuote {
+  position: absolute;
+  bottom: 4rem;
+  left: 4rem;
+  max-width: 350px;
+  z-index: 10;
+}
+
+.quoteText {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2rem; /* Más grande */
+  color: #FFFFFF;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.quoteAuthor {
+  display: block;
+  font-family: var(--font-smallcaps);
+  font-size: 0.9rem; /* Más grande */
+  color: var(--color-gold);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.quoteEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.qLine {
+  width: 30px;
+  height: 1px;
+  background: var(--color-gold);
+}
+
+.qLabel {
+  font-family: var(--font-smallcaps);
+  color: var(--color-gold);
+  letter-spacing: 0.3em;
+  font-size: 1rem; /* Más grande */
+  font-weight: 600; /* Más peso */
+}
+
+.qText {
+  font-family: var(--font-display);
+  font-size: 2.2rem; /* Más grande */
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+  font-style: italic;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4); /* Sombra para resaltar */
+}
+
+.qSub {
+  font-family: var(--font-body);
+  font-size: 1rem; /* Más grande */
+  color: rgba(255, 255, 255, 0.9); /* Más visible */
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ── GLASS CARD ── */
+
+.glassCard {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  background: rgba(15, 12, 8, 0.55); /* Oscurecido para mejor contraste */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(250, 246, 238, 0.15);
+  border-radius: 4px;
+  padding: 4rem;
+  z-index: 20;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: cardFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes cardFadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glassCard::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--glass-noise);
+  pointer-events: none;
+}
+
+.cardTopBorder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, var(--color-gold), transparent);
+}
+
+/* Header */
+.cardHeader {
+  margin-bottom: 2.5rem;
+}
+
+.cardEyebrow {
+  display: block;
+  font-family: var(--font-smallcaps);
+  font-size: 0.95rem; /* Más grande */
+  color: var(--color-gold);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  font-family: var(--font-display);
+  font-size: 3.2rem; /* Mucho más grande */
+  color: #FFFFFF; /* Blanco puro para legibilidad */
+  margin-bottom: 1.25rem;
+  font-weight: 300;
+  line-height: 1.1;
+}
+
+.cardSubtitle {
+  font-family: var(--font-body);
+  color: rgba(250, 246, 238, 0.85); /* Más visible */
+  font-size: 1.1rem; /* Más grande */
+  line-height: 1.5;
+}
+
+.cardLink {
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+  border-bottom: 1px solid rgba(201, 169, 110, 0.3);
+}
+
+.cardLink:hover {
+  opacity: 0.8;
+  border-bottom-color: var(--color-gold);
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fieldLabel {
+  font-family: var(--font-smallcaps);
+  font-size: 0.9rem; /* Más grande */
+  color: rgba(250, 246, 238, 0.8); /* Más visible */
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.fieldInput {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1.25rem; /* Más espacio */
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  font-size: 1.1rem; /* Más grande */
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.fieldInput:focus {
+  outline: none;
+  background: rgba(250, 246, 238, 0.08);
+  border-color: rgba(201, 169, 110, 0.4);
+  box-shadow: 0 0 15px rgba(201, 169, 110, 0.1);
+}
+
+.fieldInput::placeholder {
+  color: rgba(255, 255, 255, 0.45) !important;
+  opacity: 1;
+}
+
+.errorMsg {
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  margin-top: -0.5rem;
+}
+
+.submitBtn {
+  background: var(--color-gold);
+  color: #000000;
+  border: none;
+  padding: 1.25rem;
+  font-family: var(--font-smallcaps);
+  font-size: 1.1rem; /* Más grande */
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 1rem;
+  font-weight: 500;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--color-cream);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.divLine {
+  flex: 1;
+  height: 1px;
+  background: rgba(250, 246, 238, 0.1);
+}
+
+.divLabel {
+  font-family: var(--font-display);
+  font-style: italic;
+  color: rgba(250, 246, 238, 0.3);
+  font-size: 1rem;
+}
+
+/* OAuth */
+.oauthGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.oauthBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(250, 246, 238, 0.03);
+  border: 1px solid rgba(250, 246, 238, 0.08);
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 1px;
+}
+
+.oauthBtn span {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: rgba(250, 246, 238, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.oauthBtn:hover {
+  background: rgba(250, 246, 238, 0.08);
+  border-color: rgba(250, 246, 238, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Footer */
+.cardFooter {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.registerPrompt {
+  font-family: var(--font-body);
+  color: rgba(250, 246, 238, 0.8);
+  font-size: 1rem; /* Más grande */
+}
+
+.backLink {
+  font-family: var(--font-smallcaps);
+  color: rgba(250, 246, 238, 0.6);
+  font-size: 0.9rem; /* Más grande */
+  text-decoration: none;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.backLink:hover {
+  color: var(--color-gold);
+}
+
+/* ── RESPONSIVE ── */
+
+@media (max-width: 1024px) {
+  .page {
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .floatingLogo, .floatingQuote {
+    display: none;
+  }
+  
+  .glassCard {
+    padding: 2.5rem 2rem;
+  }
+}
+
+/* Grid de 2 columnas para nombre/apellido */
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* En mobile — una columna */
+@media (max-width: 480px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+}
+

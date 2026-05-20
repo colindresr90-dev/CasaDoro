@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+SC:wght@300;400;500&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Jost:wght@200;300;400&display=swap');
+@import './variables.css';
+
+html {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: clip; /* clip en lugar de hidden — no crea un scroll container */
+}
+
+body, #root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100svh;
+  /* NO overflow-x: hidden aquí — causa que Chrome atrape el scroll wheel en body */
+}
+
+main {
+  width: 100%;
+  display: block;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: #0f0c08;
+  color: var(--text-primary);
+  /* overflow-x: hidden eliminado — Chrome atrapa wheel events en body */
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/* SectionArrow siempre transparente */
+[class*="arrow"] {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+}
+
+/* Base Layout Classes */
+.container {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.section {
+  padding: var(--section-pad) 0;
+}
+
+/* Cinematic reveal utilities for useScrollCinema */
+.reveal-up, .reveal-headline, .reveal-left, .reveal-right, .reveal-scale, .reveal-stagger > * {
+  opacity: 0;
+}
+
+.parallax-slow, .parallax-fast {
+}
+
+.draw-line-h, .draw-line-v {
+  transform-origin: left top;
+}
+
+/* Custom Cursor Overlay - disabled */
+@media (pointer: fine) {
+  body {
+    /* cursor: none; */
+  }
+}
+
+/* ── GLASS SYSTEM ── */
+
+/* Base glass — sobre fondos oscuros (hero, suites dark, philosophy) */
+.glass-dark {
+  background: var(--glass-bg-dark);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border-light);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Glass claro — sobre fondos cream o terracota */
+.glass-light {
+  background: var(--glass-bg-medium);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(201, 169, 110, 0.18);
+  box-shadow: var(--glass-shadow-gold);
+}
+
+/* Glass gold — para elementos especiales con tinte dorado */
+.glass-gold {
+  background: var(--glass-bg-gold);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-gold);
+  box-shadow: var(--glass-shadow-gold);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-gold::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: var(--glass-noise);
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.glass-gold > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Subtle — para elementos que no deben robar protagonismo */
+.glass-subtle {
+  background: rgba(250, 246, 238, 0.06);
+  backdrop-filter: var(--glass-blur-subtle);
+  -webkit-backdrop-filter: var(--glass-blur-subtle);
+  border: 1px solid rgba(250, 246, 238, 0.1);
+}
+
+/* Mobile glass optimization */
+@media (max-width: 768px) {
+  .glass-dark,
+  .glass-light,
+  .glass-gold {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+.auth-loading {
+  position: fixed;
+  inset: 0;
+  background: #FAF6EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.auth-loading-line {
+  width: 60px;
+  height: 1px;
+  background: #C9A96E;
+  animation: authPulse 1.8s ease-in-out infinite;
+}
+@keyframes authPulse {
+  0%, 100% { opacity: 0.2; transform: scaleX(0.3); }
+  50%       { opacity: 1;   transform: scaleX(1);   }
+}
+
+/* ── PATTERNS AND GRADIENTS SYSTEM ── */
+
+.text-pattern {
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Dot Patterns */
+.pattern-dots-sm {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: 8px 8px;
+}
+
+.pattern-dots-md {
+  background-image: radial-gradient(currentColor 2px, transparent 2px);
+  background-size: 14px 14px;
+}
+
+.pattern-dots-lg {
+  background-image: radial-gradient(currentColor 3px, transparent 3px);
+  background-size: 20px 20px;
+}
+
+/* Checkerboard Patterns */
+.pattern-checks-sm {
+  background-image: 
+    linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor),
+    linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 6px;
+}
+
+.pattern-checks-md {
+  background-image: 
+    linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor),
+    linear-gradient(45deg, currentColor 25%, transparent 25%, transparent 75%, currentColor 75%, currentColor);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
+
+/* Color Helpers for Patterns & Textures */
+.bg-sand { background-color: var(--color-sand) !important; }
+.bg-ocean { background-color: var(--color-ocean) !important; }
+.bg-terracotta { background-color: var(--color-terracotta) !important; }
+.bg-cream { background-color: var(--color-cream) !important; }
+.bg-gold { background-color: var(--color-gold) !important; }
+.bg-charcoal { background-color: var(--color-charcoal) !important; }
+
+.text-sand { color: var(--color-sand) !important; }
+.text-ocean { color: color-mix(in srgb, var(--color-ocean) 80%, white) !important; }
+.text-terracotta { color: var(--color-terracotta) !important; }
+.text-cream { color: var(--color-cream) !important; }
+.text-gold { color: var(--color-gold) !important; }
+.text-charcoal { color: var(--color-charcoal) !important; }
+.text-white { color: #ffffff !important; }
+
+/* Custom Separator Pattern and Layout Helpers */
+.max-w-20pc {
+  max-width: 20%;
+}
+.overflow-visible {
+  overflow: visible;
+}

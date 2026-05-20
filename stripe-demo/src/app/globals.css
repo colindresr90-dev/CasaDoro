@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0805;
+  --foreground: #f5f0e8;
+  --gold: #c9a84c;
+  --gold-hover: #e0be63;
+  --glass: rgba(245, 240, 232, 0.02);
+  --glass-border: rgba(245, 240, 232, 0.07);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Custom premium visual style spells */
+.glass-panel {
+  background: rgba(10, 8, 5, 0.55);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75),
+              inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.gold-button {
+  background: var(--gold);
+  color: #0a0805;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.gold-button:hover {
+  background: var(--gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(201, 168, 76, 0.25);
+}
+
+.gold-outline {
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.gold-outline:hover {
+  background: var(--gold);
+  color: #0a0805;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(201, 168, 76, 0.2);
+}
+
+/* Luxury Form Field Visual Feedback */
+.luxury-field {
+  position: relative;
+  border-bottom: 1px solid rgba(245, 240, 232, 0.15);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-field:focus-within {
+  border-bottom: 1px solid var(--gold);
+}
+
+/* Shimmer animation for loading states */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-bg {
+  background: linear-gradient(90deg, rgba(201,168,76,0) 0%, rgba(201,168,76,0.15) 50%, rgba(201,168,76,0) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+}

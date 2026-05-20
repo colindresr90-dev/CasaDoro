@@ -1,0 +1,220 @@
+/* ══════════════════════════════════════════
+   ORO OBSIDIAN — Success & Cancel Pages Style
+   Casa d'Oro · Balanced Editorial Design
+   ══════════════════════════════════════════ */
+
+.container {
+  min-height: 100vh;
+  background: #0a0805;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  color: #f5f0e8;
+  font-family: 'Inter', sans-serif;
+}
+
+.glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-translate-x, -translate-y);
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card {
+  background: rgba(18, 15, 12, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  padding: 48px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 
+              0 0 50px rgba(201, 168, 76, 0.03);
+}
+
+.iconWrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 32px auto;
+  background: rgba(201, 168, 76, 0.05);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  color: #c9a84c;
+}
+
+.iconCancel {
+  width: 24px;
+  height: 24px;
+  color: #c0573a;
+}
+
+.iconWrapperCancel {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(192, 87, 58, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 32px auto;
+  background: rgba(192, 87, 58, 0.05);
+}
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: #c9a84c;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.title {
+  font-family: 'EB Garamond', serif;
+  font-size: 36px;
+  font-weight: 300;
+  color: #f5f0e8;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(245, 240, 232, 0.7);
+  max-width: 400px;
+  margin: 0 auto 40px auto;
+}
+
+.emailHighlight {
+  display: block;
+  color: #c9a84c;
+  font-weight: 500;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.table {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 0;
+  margin-bottom: 40px;
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.row:last-child {
+  margin-bottom: 0;
+}
+
+.label {
+  color: rgba(245, 240, 232, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.value {
+  color: #f5f0e8;
+  font-weight: 500;
+}
+
+.valueGold {
+  color: #c9a84c;
+  font-weight: 600;
+}
+
+.transactionRow {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.transactionId {
+  font-family: monospace;
+  font-size: 11px;
+  color: rgba(245, 240, 232, 0.4);
+  word-break: break-all;
+  max-width: 200px;
+}
+
+.btnGold {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: #c9a84c;
+  color: #0a0805;
+  border: 1px solid #c9a84c;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.btnGold:hover {
+  background: transparent;
+  color: #c9a84c;
+}
+
+.btnOutline {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  color: #f5f0e8;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btnOutline:hover {
+  border-color: #c9a84c;
+  color: #c9a84c;
+  background: rgba(201, 168, 76, 0.02);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 32px 24px;
+  }
+  .title {
+    font-size: 30px;
+  }
+}

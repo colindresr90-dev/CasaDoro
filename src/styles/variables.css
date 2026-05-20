@@ -1,0 +1,87 @@
+:root {
+  /* Brand Colors */
+  --color-sand: #E8D5B0;
+  --color-ocean: #1B3A4B;
+  --color-terracotta: #8B4A2F; /* Soft Terracotta */
+  --color-cream: #F5F0E8;    /* Warm Cream */
+  --color-gold: #C9A84C;     /* Antique Gold */
+  --color-charcoal: #0A0805;  /* Deep Black */
+  
+  /* Text Colors */
+  --text-primary: var(--color-charcoal);
+  --text-secondary: var(--color-terracotta);
+  --text-light: var(--color-cream);
+  --text-accent: var(--color-gold);
+  
+  /* Backgrounds */
+  --bg-primary: var(--color-cream);
+  --bg-dark: var(--color-charcoal);
+  --bg-ocean: var(--color-ocean);
+  
+  /* Typography */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-smallcaps: 'Cormorant SC', Georgia, serif;
+  --font-body: 'Jost', system-ui, sans-serif;
+
+  /* Sizing scale */
+  --text-hero:    clamp(64px, 10vw, 140px);
+  --text-display: clamp(36px, 5vw, 72px);
+  --text-h2:      clamp(28px, 3.5vw, 48px);
+  --text-h3:      clamp(20px, 2.5vw, 32px);
+  --text-body-lg: 17px;
+  --text-body:    15px;
+  --text-small:   13px;
+  --text-micro:   11px;
+
+  /* Weights */
+  --weight-thin:    200;
+  --weight-light:   300;
+  --weight-regular: 400;
+  --weight-medium:  500;
+
+  /* Letter spacing */
+  --tracking-hero:      0.15em;
+  --tracking-display:   0.08em;
+  --tracking-smallcaps: 0.3em;
+  --tracking-body:      0.01em;
+  --tracking-label:     0.35em;
+
+  /* Line heights */
+  --leading-tight:  1.15;
+  --leading-normal: 1.6;
+  --leading-loose:  2;
+  
+  /* Spacing */
+  --section-pad: clamp(80px, 10vw, 120px);
+  --container-width: 1440px;
+  --header-height: 80px;
+  
+  /* Transitions */
+  --transition-slow: 0.8s cubic-bezier(0.7, 0, 0.3, 1);
+  --transition-medium: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Z-index */
+  --z-nav: 1000;
+  --z-cursor: 9999;
+  --z-transition: 10000;
+
+  /* ── GLASS SYSTEM ── */
+  --glass-blur:         blur(18px);
+  --glass-blur-heavy:   blur(32px);
+  --glass-blur-subtle:  blur(8px);
+
+  --glass-bg-light:     rgba(250, 246, 238, 0.12);
+  --glass-bg-medium:    rgba(250, 246, 238, 0.18);
+  --glass-bg-dark:      rgba(15, 12, 8, 0.25);
+  --glass-bg-gold:      rgba(201, 169, 110, 0.08);
+
+  --glass-border-light: rgba(250, 246, 238, 0.2);
+  --glass-border-gold:  rgba(201, 169, 110, 0.25);
+  --glass-border-dark:  rgba(15, 12, 8, 0.15);
+
+  --glass-shadow:       0 8px 48px rgba(0, 0, 0, 0.12),
+                        0 2px 8px rgba(0, 0, 0, 0.08);
+  --glass-shadow-gold:  0 8px 48px rgba(201, 169, 110, 0.08),
+                        0 2px 8px rgba(0, 0, 0, 0.06);
+  --glass-noise:        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+}
