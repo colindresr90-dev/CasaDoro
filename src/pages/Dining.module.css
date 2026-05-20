@@ -1280,10 +1280,39 @@
   color: #C9A96E;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ╔══════════════════════════════════╗
    RESPONSIVE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+╚══════════════════════════════════╝ */
 @media (max-width: 1024px) {
+  /* Statement — collapse to 2-column on tablet */
+  .statementInner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .statementNum {
+    font-size: 72px;
+  }
+  .statementContent {
+    padding-right: 0;
+  }
+  .statementCreds {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 32px 24px;
+  }
+  /* Menu header — collapse to 1 column */
+  .menuHeader {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 80px 6vw 60px;
+  }
+  .menuHeaderRight {
+    border-left: none;
+    border-top: 1px solid rgba(201,169,110,0.15);
+    padding-left: 0;
+    padding-top: 32px;
+  }
+
   .chefHero {
     grid-template-columns: 45% 55%;
   }
@@ -1300,7 +1329,140 @@
 }
 
 @media (max-width: 768px) {
-  /* Hero — stack vertical */
+  /* ── HERO ── */
+  .hero {
+    height: 100svh;
+  }
+  .heroTitle {
+    font-size: clamp(40px, 10vw, 64px);
+    line-height: 1;
+    margin: 0 0 24px;
+  }
+  .heroSub {
+    font-size: clamp(16px, 4vw, 20px);
+    margin: 0 0 36px;
+  }
+  .heroPillars {
+    flex-direction: column;
+    gap: 0;
+  }
+  .pillar {
+    padding: 16px 24px;
+    flex-direction: row;
+    gap: 12px;
+  }
+  .pillarDiv {
+    width: 60%;
+    height: 1px;
+  }
+  .heroStars {
+    margin-bottom: 24px;
+  }
+  .starLine {
+    width: 40px;
+  }
+
+  /* ── STATEMENT ── */
+  .statement {
+    padding: 80px 6vw;
+  }
+  .statementInner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .statementNum {
+    display: none;
+  }
+  .statementContent {
+    padding-right: 0;
+    gap: 24px;
+  }
+  .statementQuote {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+  .statementBody {
+    font-size: 16px;
+  }
+  .statementCreds {
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 24px 16px;
+    gap: 0;
+  }
+  .cred {
+    padding: 12px 0;
+  }
+  .credNum {
+    font-size: clamp(28px, 7vw, 42px);
+  }
+
+  /* ── MENU HEADER ── */
+  .menuHeader {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 80px 6vw 48px;
+  }
+  .menuHeaderRight {
+    border-left: none;
+    border-top: 1px solid rgba(201,169,110,0.15);
+    padding-left: 0;
+    padding-top: 28px;
+  }
+  .menuNote {
+    font-size: 16px;
+  }
+
+  /* ── DISH ROWS ── */
+  .dishRow,
+  .dishRowReverse {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    direction: ltr;
+  }
+  .dishRowReverse .dishVisual {
+    order: 0;
+  }
+  .dishRowReverse .dishText {
+    order: 1;
+  }
+  .dishVisual {
+    min-height: 60vw;
+    max-height: 380px;
+  }
+  .dishText {
+    padding: 48px 6vw;
+    gap: 20px;
+  }
+  .dishRowReverse .dishText {
+    padding: 48px 6vw;
+  }
+  .dishName {
+    font-size: clamp(32px, 8vw, 52px);
+  }
+  .dishDesc {
+    font-size: 16px;
+  }
+  .dishMeta {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .dishCourse {
+    font-size: 14px;
+    letter-spacing: 0.2em;
+  }
+  .dishPairing {
+    padding: 16px 20px;
+  }
+  .pairingValue {
+    font-size: 20px;
+  }
+  .dishNumeral {
+    font-size: 56px;
+  }
+  .dishRow .dishNumeral { left: 20px; top: 20px; }
+  .dishRowReverse .dishNumeral { right: 20px; left: auto; top: 20px; }
+
+  /* Chef hero — stack vertical */
   .chefHero {
     grid-template-columns: 1fr;
     min-height: auto;
@@ -1318,6 +1480,20 @@
   }
   .chefHeroContent {
     padding: 48px 6vw 64px;
+  }
+  .chefFirstName,
+  .chefLastName {
+    font-size: clamp(40px, 11vw, 72px);
+  }
+  .chefQuote {
+    max-width: 100%;
+  }
+  .chefStatsRow {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+  .chefStat {
+    min-width: 80px;
   }
 
   /* Historia — stack vertical */
@@ -1344,7 +1520,7 @@
     padding: 0 6vw;
   }
   .tableTitle {
-    font-size: 42px;
+    font-size: clamp(32px, 8vw, 48px);
   }
   .tableStats {
     flex-wrap: wrap;
