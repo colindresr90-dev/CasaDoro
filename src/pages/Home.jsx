@@ -272,8 +272,7 @@ const Home = () => {
             {"Casa d'Oro".split("").map((char, index) => (
               <span 
                 key={index} 
-                className={styles.char} 
-                style={{ display: 'inline-block', minWidth: char === ' ' ? '0.3em' : 'auto' }}
+                className={`${styles.char}${char === ' ' ? ` ${styles.charSpace}` : ''}`}
               >
                 {char}
               </span>
