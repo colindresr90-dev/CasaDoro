@@ -30,6 +30,7 @@ export default function Reservar() {
   })
   const [isStripeLoading, setIsStripeLoading] = useState(false)
   const [stripeError, setStripeError] = useState('')
+  const [stripeRedirectUrl, setStripeRedirectUrl] = useState('')
 
   // Date Range Picker state
   const [showCalendar, setShowCalendar] = useState(false)
@@ -243,24 +244,48 @@ export default function Reservar() {
 
       const stripeApiUrl = import.meta.env.VITE_STRIPE_API_URL || getApiUrl('/api/checkout')
 
-      const response = await fetch(stripeApiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          roomName: suite.nombre,
-          totalPrice: total,
-          checkIn: fechas.entrada,
-          checkOut: fechas.salida,
-          email: datos.email,
-          metadata: { reservacion_id: reservacion.id }
-        }),
-      })
+      // Use AbortController to prevent infinite hangs in case the server or proxy is unreachable
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 12000)
+
+      let response
+      try {
+        response = await fetch(stripeApiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            roomName: suite.nombre,
+            totalPrice: total,
+            checkIn: fechas.entrada,
+            checkOut: fechas.salida,
+            email: datos.email,
+            metadata: { reservacion_id: reservacion.id }
+          }),
+          signal: controller.signal
+        })
+      } catch (fetchErr) {
+        if (fetchErr.name === 'AbortError') {
+          throw new Error('La conexión con la pasarela de pago ha expirado. Por favor verifique su conexión e intente de nuevo.')
+        }
+        throw fetchErr
+      } finally {
+        clearTimeout(timeoutId)
+      }
 
       const session = await response.json()
 
       if (!response.ok) {
         throw new Error(session.error || 'Ocurrió un error al conectar con la pasarela de pago.')
       }
+
+      setStripeRedirectUrl(session.url)
+
+      // Safeguard for mobile browsers: if redirect is blocked or slow, reset the loading state after 8 seconds
+      // so the page is not stuck on "Conectando con Stripe..." forever
+      const redirectTimeout = setTimeout(() => {
+        setIsStripeLoading(false)
+        setStripeError('Si no fue redirigido automáticamente a Stripe, por favor intente de nuevo o use otro navegador.')
+      }, 8000)
 
       window.location.href = session.url
 
@@ -665,7 +690,7 @@ export default function Reservar() {
           )}
 
           {/* ── STEP 3: Confirmación Final ── */}
-          {step === 3 && (!success || isStripeLoading) && (
+          {step === 3 && (!success || isStripeLoading || stripeRedirectUrl || stripeError) && (
             <div className={styles.stepBody}>
               <div className={styles.summaryCard}>
                 <div className={styles.summaryRow}>
@@ -717,24 +742,54 @@ export default function Reservar() {
 
               {error && <p className={styles.choiceText} style={{color: '#c0573a'}}>{error}</p>}
               {stripeError && <p className={styles.choiceText} style={{color: '#c0573a'}}>{stripeError}</p>}
+              {stripeRedirectUrl && !stripeError && (
+                <p className={styles.choiceText} style={{color: '#c9a84c', fontSize: '14.5px', textAlign: 'center', marginTop: '10px', fontWeight: '500'}}>
+                  ✦ Su sesión de pago está lista. Si la redirección automática falló, presione el botón de abajo.
+                </p>
+              )}
 
               <div className={styles.inputGrid}>
-                <button className={styles.secondaryBtn} onClick={() => setStep(2.1)} disabled={loading || isStripeLoading}>
-                  ← Editar
-                </button>
                 <button
-                  className={styles.submitBtn}
-                  onClick={handleSubmit}
+                  className={styles.secondaryBtn}
+                  onClick={() => {
+                    resetSuccess()
+                    setStripeRedirectUrl('')
+                    setStripeError('')
+                    setStep(2.1)
+                  }}
                   disabled={loading || isStripeLoading}
                 >
-                  {loading || isStripeLoading ? 'Conectando con Stripe...' : 'Pagar con Tarjeta'}
+                  ← Editar
                 </button>
+                {stripeRedirectUrl ? (
+                  <a
+                    href={stripeRedirectUrl}
+                    className={styles.submitBtn}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      textDecoration: 'none',
+                      textAlign: 'center'
+                    }}
+                  >
+                    Ir a Pagar (Stripe) →
+                  </a>
+                ) : (
+                  <button
+                    className={styles.submitBtn}
+                    onClick={handleSubmit}
+                    disabled={loading || isStripeLoading}
+                  >
+                    {loading || isStripeLoading ? 'Conectando con Stripe...' : 'Pagar con Tarjeta'}
+                  </button>
+                )}
               </div>
             </div>
           )}
 
           {/* ── SUCCESS ── */}
-          {success && !isStripeLoading && (
+          {success && !isStripeLoading && !stripeRedirectUrl && !stripeError && (
             <div className={styles.successContainer}>
               <span className={styles.successIcon}>✦</span>
               <h2 className={styles.stepTitle}>Solicitud Enviada</h2>

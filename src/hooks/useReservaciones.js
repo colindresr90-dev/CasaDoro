@@ -45,7 +45,7 @@ export function useReservacion() {
         ...datos,
         noches,
         precio_total,
-        estado: 'confirmada'
+        estado: 'pendiente'
       })
 
       setSuccess(true)

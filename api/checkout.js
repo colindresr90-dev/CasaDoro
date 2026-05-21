@@ -10,12 +10,17 @@ const stripe = stripeSecretKey ? new Stripe(stripeSecretKey) : null;
 
 export default async function handler(req, res) {
   // CORS Headers for safety
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
   );
 
   if (req.method === 'OPTIONS') {
@@ -51,6 +56,23 @@ export default async function handler(req, res) {
       imageUrl = 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop';
     }
 
+    // Determine the origin safely (handles both local dev and serverless deployment like Vercel)
+    let origin = req.headers.origin;
+    if (!origin && req.headers.referer) {
+      try {
+        origin = new URL(req.headers.referer).origin;
+      } catch (e) {
+        // Ignore invalid URL
+      }
+    }
+    if (!origin && req.headers.host) {
+      const protocol = req.headers['x-forwarded-proto'] || 'http';
+      origin = `${protocol}://${req.headers.host}`;
+    }
+    if (!origin) {
+      origin = 'http://localhost:5173'; // Default fallback
+    }
+
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       customer_email: email,
@@ -69,8 +91,8 @@ export default async function handler(req, res) {
         },
       ],
       mode: 'payment',
-      success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}&roomName=${encodeURIComponent(roomName)}&checkIn=${checkIn}&checkOut=${checkOut}&totalPrice=${totalPrice}&email=${encodeURIComponent(email)}&reservacion_id=${metadata?.reservacion_id || ''}`,
-      cancel_url: `${req.headers.origin}/cancel?roomName=${encodeURIComponent(roomName)}`,
+      success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}&roomName=${encodeURIComponent(roomName)}&checkIn=${checkIn}&checkOut=${checkOut}&totalPrice=${totalPrice}&email=${encodeURIComponent(email)}&reservacion_id=${metadata?.reservacion_id || ''}`,
+      cancel_url: `${origin}/cancel?roomName=${encodeURIComponent(roomName)}`,
       metadata: {
         roomName,
         checkIn,
