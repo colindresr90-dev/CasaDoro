@@ -955,10 +955,10 @@
   background: rgba(201,169,110,0.2);
 }
 
-/* Grid de 3 columnas */
+/* Grid de 2 columnas */
 .chefStoryGrid {
   display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr;
+  grid-template-columns: 1fr auto 1fr;
   gap: 0;
   align-items: start;
   max-width: 1200px;

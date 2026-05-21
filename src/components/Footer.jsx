@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
+import { useLanguage } from '../context/LanguageContext';
 
 const Footer = () => {
+  const { t } = useLanguage();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -12,9 +15,9 @@ const Footer = () => {
           </div>
           
           <div className={styles.nav}>
-            <Link to="/suites">Las Suites</Link>
-            <Link to="/dining">Gastronomía</Link>
-            <Link to="/wellness">Bienestar & Surf</Link>
+            <Link to="/suites">{t('suites', 'footer')}</Link>
+            <Link to="/dining">{t('dining', 'footer')}</Link>
+            <Link to="/wellness">{t('wellness', 'footer')}</Link>
           </div>
           
           <div className={styles.social}>
@@ -24,8 +27,8 @@ const Footer = () => {
         </div>
         
         <div className={styles.bottom}>
-          <p>El Tunco, La Libertad, El Salvador</p>
-          <p>© 2024 Casa d'Oro. Todos los derechos reservados. Reservas: reservas@casadoro.com</p>
+          <p>{t('address', 'footer')}</p>
+          <p>{t('copyright', 'footer')}</p>
         </div>
       </div>
     </footer>

@@ -3,6 +3,7 @@ import styles from './Wellness.module.css';
 import { useScrollCinema } from '../hooks/useScrollCinema';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 import surfImg   from '../assets/images/wellness/surf_v2.png';
 import spaImg    from '../assets/images/wellness/spa_v2.png';
@@ -10,47 +11,22 @@ import detailImg from '../assets/images/wellness/detail_v2.png';
 import spaStones from '../assets/images/wellness/spa-stones.png';
 
 const EXPERIENCES = [
-  {
-    id: 1,
-    category: 'Surf · Olas del Pacífico',
-    tag: 'Temporada Todo el año',
-    name: 'El Point Break de El Tunco',
-    image: surfImg,
-    desc: 'El Tunco no es una ubicación; es un latido ancestral. Acceso directo a las olas más legendarias del Pacífico, con coaching profesional al amanecer antes que el resto del mundo despierte.',
-    tags: ['Coaching Profesional', 'Equipo Premium', 'Fotografía en agua', 'Sunzal Sessions'],
-    detail: 'Mareas · Pacífico Central · Offshore permanente',
-  },
-  {
-    id: 2,
-    category: 'Spa · Ritual Volcánico',
-    tag: 'Reserva previa',
-    name: 'Sanctuary Spa',
-    image: spaImg,
-    desc: 'Rituales inspirados en la geología volcánica y la botánica nativa de El Salvador. Piedras calientes de obsidiana, aceites prensados en frío y el sonido constante del océano como fondo.',
-    tags: ['Piedras Volcánicas', 'Botánica Nativa', 'Aromaterapia', 'Masaje Profundo'],
-    detail: 'Duración: 90 min · Solo bajo reserva',
-  },
-  {
-    id: 3,
-    category: 'Meditación · Atardecer',
-    tag: 'Diario · 18:00',
-    name: 'Ritual del Horizonte',
-    image: detailImg,
-    desc: 'Sesión guiada de meditación y respiración mientras el cielo del Pacífico se incendia en tonos dorados. Un ritual colectivo de silencio y reconexión frente al horizonte infinito.',
-    tags: ['Meditación Guiada', 'Pranayama', 'Sunset View', 'Grupos Pequeños'],
-    detail: 'Todos los días · Terraza principal',
-  },
+  { id: 1, image: surfImg },
+  { id: 2, image: spaImg },
+  { id: 3, image: detailImg }
 ];
-
 
 const Wellness = () => {
   useScrollCinema();
+  const { t, language, translations } = useLanguage();
 
   useEffect(() => {
-    document.title = "Bienestar & Surf | Casa d'Oro – El Tunco, El Salvador";
+    document.title = t('seoTitle', 'wellness');
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', "Descubre el santuario de bienestar y surf de Casa d'Oro en El Tunco. Rituales volcánicos, coaching profesional de surf y meditación al atardecer frente al Pacífico.");
+    if (meta) meta.setAttribute('content', t('seoDesc', 'wellness'));
+  }, [language, t]);
 
+  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     // Hero
@@ -154,6 +130,21 @@ const Wellness = () => {
     return () => { ScrollTrigger.getAll().forEach(t => t.kill()); };
   }, []);
 
+  // Map experiences to translations
+  const localizedExperiences = EXPERIENCES.map(exp => {
+    const key = `exp${exp.id}`;
+    const localExp = translations?.wellness?.experiences?.[key] || {};
+    return {
+      ...exp,
+      category: localExp.category || '',
+      tag: localExp.tag || '',
+      name: localExp.name || '',
+      desc: localExp.desc || '',
+      tags: localExp.tags || [],
+      detail: localExp.detail || ''
+    };
+  });
+
   return (
     <div className={styles.page}>
 
@@ -163,18 +154,18 @@ const Wellness = () => {
         <div className={styles.heroContent}>
           <div className={styles.heroStars}>
             <span className={styles.starLine} />
-            <span className={styles.starText}>✦ Bienestar & Surf · El Tunco ✦</span>
+            <span className={styles.starText}>{t('starText', 'wellness')}</span>
             <span className={styles.starLine} />
           </div>
           <h1 className={styles.heroTitle}>
-            {"El Flujo".split('').map((char, index) => (
+            {t('heroTitle1', 'wellness').split('').map((char, index) => (
               <span key={index} className={styles.char}>
                 {char === ' ' ? '\u00A0' : char}
               </span>
             ))}
             <br />
             <em className={styles.goldGradientText}>
-              {"del Pacífico".split('').map((char, index) => (
+              {t('heroTitle2', 'wellness').split('').map((char, index) => (
                 <span key={index} className={styles.char}>
                   {char === ' ' ? '\u00A0' : char}
                 </span>
@@ -182,22 +173,27 @@ const Wellness = () => {
             </em>
           </h1>
           <p className={styles.heroSub}>
-            Donde el océano marca el ritmo<br />y el cuerpo recuerda su naturaleza.
+            {t('heroSub', 'wellness').split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                {index < t('heroSub', 'wellness').split('\n').length - 1 && <br />}
+              </span>
+            ))}
           </p>
           <div className={styles.heroPillars}>
             <div className={styles.pillar}>
               <span className={styles.pillarIcon}>◈</span>
-              <span className={styles.pillarText}>Surf Culture</span>
+              <span className={styles.pillarText}>{t('pillar1', 'wellness')}</span>
             </div>
             <span className={styles.pillarDiv} />
             <div className={styles.pillar}>
               <span className={styles.pillarIcon}>◈</span>
-              <span className={styles.pillarText}>Sanctuary Spa</span>
+              <span className={styles.pillarText}>{t('pillar2', 'wellness')}</span>
             </div>
             <span className={styles.pillarDiv} />
             <div className={styles.pillar}>
               <span className={styles.pillarIcon}>◈</span>
-              <span className={styles.pillarText}>Ritual Atardecer</span>
+              <span className={styles.pillarText}>{t('pillar3', 'wellness')}</span>
             </div>
           </div>
         </div>
@@ -209,26 +205,38 @@ const Wellness = () => {
           <span className={styles.statementNum}>01</span>
           <div className={styles.statementContent}>
             <blockquote className={styles.statementQuote}>
-              "El mar no simplemente te rodea; te calibra."
+              "{t('statementQuote', 'wellness')}"
             </blockquote>
             <p className={styles.statementBody}>
-              En Casa d'Oro, el bienestar no es un servicio —es la esencia misma del lugar. El sonido constante del Pacífico, el ritual matutino del surf, las piedras volcánicas calientes y el silencio del atardecer crean un ecosistema de recuperación profunda que ningún spa urbano puede replicar.
+              {t('statementBody', 'wellness')}
             </p>
           </div>
           <div className={styles.statementCreds}>
             <div className={styles.cred}>
               <span className={styles.credNum}>70</span>
-              <span className={styles.credLabel}>Rituales<br />disponibles</span>
+              <span className={styles.credLabel}>
+                {t('statLabel1', 'wellness').split('\n').map((l, i) => (
+                  <span key={i}>{l}{i === 0 && <br />}</span>
+                ))}
+              </span>
             </div>
             <div className={styles.credLine} />
             <div className={styles.cred}>
               <span className={styles.credNum}>100%</span>
-              <span className={styles.credLabel}>Productos<br />orgánicos</span>
+              <span className={styles.credLabel}>
+                {t('statLabel2', 'wellness').split('\n').map((l, i) => (
+                  <span key={i}>{l}{i === 0 && <br />}</span>
+                ))}
+              </span>
             </div>
             <div className={styles.credLine} />
             <div className={styles.cred}>
               <span className={styles.credNum}>∞</span>
-              <span className={styles.credLabel}>Vistas<br />al Pacífico</span>
+              <span className={styles.credLabel}>
+                {t('statLabel3', 'wellness').split('\n').map((l, i) => (
+                  <span key={i}>{l}{i === 0 && <br />}</span>
+                ))}
+              </span>
             </div>
           </div>
         </div>
@@ -238,21 +246,27 @@ const Wellness = () => {
       <section className={styles.menu} id="experiencias">
         <div className={styles.menuHeader}>
           <div className={styles.menuHeaderContent}>
-            <span className={styles.menuEyebrow}>Programa de Bienestar</span>
-            <h2 className={styles.menuTitle}>Las Experiencias <em>Insignia</em></h2>
+            <span className={styles.menuEyebrow}>{t('menuEyebrow', 'wellness')}</span>
+            <h2 className={styles.menuTitle}>
+              {language === 'es' ? (
+                <>Las Experiencias <em>Insignia</em></>
+              ) : (
+                <>{t('menuTitle', 'wellness')} <em>{t('menuSubtitle', 'wellness')}</em></>
+              )}
+            </h2>
           </div>
           <div className={styles.menuHeaderRight}>
             <p className={styles.menuNote}>
-              Cada experiencia está diseñada para reconectar el cuerpo con el entorno natural de El Tunco, El Salvador.
+              {t('menuNote', 'wellness')}
             </p>
             <div className={styles.menuSeasonBadge}>
               <span className={styles.seasonDot} />
-              <span>Disponible todo el año · Bajo reserva</span>
+              <span>{t('menuSeason', 'wellness')}</span>
             </div>
           </div>
         </div>
 
-        {EXPERIENCES.map((exp, i) => (
+        {localizedExperiences.map((exp, i) => (
           <div
             key={exp.id}
             className={`${styles.expRow} ${i % 2 !== 0 ? styles.expRowReverse : ''}`}
@@ -274,7 +288,9 @@ const Wellness = () => {
                 ))}
               </div>
               <div className={`${styles.expDetail} glass-gold`}>
-                <span className={styles.detailLabel}>Detalle</span>
+                <span className={styles.detailLabel}>
+                  {language === 'es' ? 'Detalle' : 'Detail'}
+                </span>
                 <span className={styles.detailValue}>{exp.detail}</span>
               </div>
             </div>
@@ -291,61 +307,83 @@ const Wellness = () => {
             <div className={styles.ritualPhotoFade} />
             <div className={styles.ritualPhotoBadge}>
               <span className={styles.badgeLine} />
-              <span className={styles.badgeText}>El Ritmo Vital</span>
+              <span className={styles.badgeText}>{t('ritualBadge', 'wellness')}</span>
               <span className={styles.badgeLine} />
             </div>
           </div>
 
           <div className={styles.ritualHeroContent}>
-            <span className={styles.ritualEyebrow}>El Día Perfecto</span>
+            <span className={styles.ritualEyebrow}>{t('ritualEyebrow', 'wellness')}</span>
             <div className={styles.ritualNameWrap}>
-              <h2 className={styles.ritualFirstName}>Ritual</h2>
-              <h2 className={styles.ritualLastName}><em>Diario</em></h2>
+              <h2 className={styles.ritualFirstName}>
+                {language === 'es' ? 'Ritual' : 'Daily'}
+              </h2>
+              <h2 className={styles.ritualLastName}>
+                <em>{language === 'es' ? 'Diario' : 'Ritual'}</em>
+              </h2>
             </div>
-            <p className={styles.ritualRole}>Un ciclo completo de 24 horas</p>
+            <p className={styles.ritualRole}>
+              {language === 'es' ? 'Un ciclo completo de 24 horas' : 'A complete 24-hour cycle'}
+            </p>
             <div className={styles.ritualDivider} />
             <p className={styles.ritualBio}>
-              Cada jornada en Casa d'Oro sigue un ritmo cuidadosamente diseñado en armonía con las mareas, la luz natural y los ciclos del Pacífico. Desde el amanecer en el break hasta la cena consciente bajo las estrellas.
+              {language === 'es'
+                ? "Cada jornada en Casa d'Oro sigue un ritmo cuidadosamente diseñado en armonía con las mareas, la luz natural y los ciclos del Pacífico. Desde el amanecer en el break hasta la cena consciente bajo las estrellas."
+                : "Each day at Casa d'Oro follows a carefully designed rhythm in harmony with the tides, natural light, and the cycles of the Pacific. From dawn at the break to mindful dining under the stars."
+              }
             </p>
             <div className={styles.ritualStatsRow}>
               <div className={styles.ritualStat}>
                 <span className={styles.ritualStatN}>6</span>
-                <span className={styles.ritualStatL}>Momentos Clave</span>
+                <span className={styles.ritualStatL}>
+                  {language === 'es' ? 'Momentos Clave' : 'Key Moments'}
+                </span>
               </div>
               <div className={styles.ritualStatDiv} />
               <div className={styles.ritualStat}>
                 <span className={styles.ritualStatN}>24h</span>
-                <span className={styles.ritualStatL}>Ciclo Completo</span>
+                <span className={styles.ritualStatL}>
+                  {language === 'es' ? 'Ciclo Completo' : 'Full Cycle'}
+                </span>
               </div>
               <div className={styles.ritualStatDiv} />
               <div className={styles.ritualStat}>
                 <span className={styles.ritualStatN}>∞</span>
-                <span className={styles.ritualStatL}>Bienestar</span>
+                <span className={styles.ritualStatL}>
+                  {language === 'es' ? 'Bienestar' : 'Wellness'}
+                </span>
               </div>
             </div>
           </div>
         </div>
-
 
         {/* Philosophy Block */}
         <div className={styles.philosophy} id="filosofia">
           <div className={styles.philosophyBg} />
           <div className={styles.philosophyInner}>
             <div className={styles.philosophyContent}>
-              <span className={styles.philosophyEyebrow}>La Experiencia Definitiva</span>
+              <span className={styles.philosophyEyebrow}>
+                {language === 'es' ? 'La Experiencia Definitiva' : 'The Ultimate Experience'}
+              </span>
               <h2 className={styles.philosophyTitle}>
-                El océano<br />
-                <em>como medicina.</em>
+                {language === 'es' ? (
+                  <>El océano<br /><em>como medicina.</em></>
+                ) : (
+                  <>The ocean<br /><em>as medicine.</em></>
+                )}
               </h2>
               <p className={styles.philosophyDesc}>
-                Tres ritmos. Una hacienda. El Pacífico como constante. Sin agenda, sin urgencia, sin prisa. Solo el flujo natural del lugar que lleva décadas curando a quienes se permiten escuchar.
+                {language === 'es'
+                  ? "Tres ritmos. Una hacienda. El Pacífico como constante. Sin agenda, sin urgencia, sin prisa. Solo el flujo natural del lugar que lleva décadas curando a quienes se permiten escuchar."
+                  : "Three rhythms. One estate. The Pacific as a constant. No agenda, no urgency, no rush. Only the natural flow of the place that has been healing those who allow themselves to listen for decades."
+                }
               </p>
               <div className={styles.philosophyStats}>
                 {[
-                  { n: '70+', l: 'Rituales' },
+                  { n: '70+', l: language === 'es' ? 'Rituales' : 'Rituals' },
                   { n: '5★', l: 'Rating' },
-                  { n: '3h', l: 'Spa sesión' },
-                  { n: '∞', l: 'Pacífico' },
+                  { n: '3h', l: language === 'es' ? 'Spa sesión' : 'Spa session' },
+                  { n: '∞', l: language === 'es' ? 'Pacífico' : 'Pacific' },
                 ].map(s => (
                   <div key={s.l} className={styles.philosophyStat}>
                     <span className={styles.philosophyStatN}>{s.n}</span>
@@ -355,15 +393,21 @@ const Wellness = () => {
               </div>
               <div className={styles.philosophyActions}>
                 <a href="/contacto" className={styles.philosophyCta}>
-                  Solicitar programa
+                  {language === 'es' ? 'Solicitar programa' : 'Request Program'}
                   <span className={styles.philosophyCtaArrow}>→</span>
                 </a>
-                <p className={styles.philosophyNote}>Personalizado · Solo bajo reserva previa</p>
+                <p className={styles.philosophyNote}>
+                  {language === 'es' ? 'Personalizado · Solo bajo reserva previa' : 'Customized · Only upon prior reservation'}
+                </p>
               </div>
             </div>
             <div className={styles.philosophySide}>
               <p className={styles.philosophyQuote}>
-                "Limpia el espíritu<br />y nos devuelve al flujo<br />natural de la existencia."
+                {language === 'es' ? (
+                  <>"Limpia el espíritu<br />y nos devuelve al flujo<br />natural de la existencia."</>
+                ) : (
+                  <>"Cleanses the spirit<br />and returns us to the natural<br />flow of existence."</>
+                )}
               </p>
             </div>
           </div>
@@ -375,17 +419,20 @@ const Wellness = () => {
       <section className={styles.cta}>
         <div className="container">
           <h2 className={styles.resTitle}>
-            Empieza tu <em>flujo vital</em>
+            {language === 'es' ? <>Empieza tu <em>flujo vital</em></> : <>Begin your <em>vital flow</em></>}
           </h2>
           <p className={styles.resSub}>
-            Disponibilidad limitada. Reserva con antelación para experiencias personalizadas de bienestar.
+            {language === 'es'
+              ? "Disponibilidad limitada. Reserva con antelación para experiencias personalizadas de bienestar."
+              : "Limited availability. Book in advance for personalized wellness experiences."
+            }
           </p>
           <div className={styles.btnGroup}>
             <a href="https://wa.me/50312345678" className={styles.btnPrimary} target="_blank" rel="noopener noreferrer">
-              Reservar Experiencia
+              {t('resBtn', 'wellness')}
             </a>
             <a href="/menu-completo.pdf" className={styles.btnSecondary} target="_blank">
-              Ver Programa Completo
+              {language === 'es' ? 'Ver Programa Completo' : 'View Full Program'}
             </a>
           </div>
         </div>

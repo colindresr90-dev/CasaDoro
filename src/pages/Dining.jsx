@@ -3,6 +3,7 @@ import styles from './Dining.module.css';
 import { useScrollCinema } from '../hooks/useScrollCinema';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLanguage } from '../context/LanguageContext';
 
 import dish1 from '../assets/images/dining/dish1.png';
 import dish2 from '../assets/images/dining/dish2.png';
@@ -12,79 +13,28 @@ import dish5 from '../assets/images/dining/dish5.png';
 import dish6 from '../assets/images/dining/dish6.png';
 
 const DISHES_EDITORIAL = [
-  {
-    id: 1,
-    course: 'Primer tiempo · El Inicio',
-    season: 'Temporada Seca',
-    name: 'Crudo de Atún Aleta Amarilla',
-    image: dish1,
-    desc: 'Atún capturado artesanalmente frente a nuestras costas, marinado en una emulsión de cítricos de la hacienda, aguacate criollo tatemado y pétalos de flores silvestres. Una oda a la frescura del Pacífico.',
-    ingredients: ['Atún aleta amarilla', 'Cítricos locales', 'Aguacate criollo', 'Sal de mar', 'Rábanos'],
-    pairing: 'Chablis · Domaine William Fèvre · France'
-  },
-  {
-    id: 2,
-    course: 'Segundo tiempo · La Tierra',
-    season: 'Todo el año',
-    name: 'Risotto de Langosta del Pacífico',
-    image: dish2,
-    desc: 'Arroz Acquerello envejecido 7 años, mantecado con bisque de langosta roja y azafrán español, coronado con medallones de langosta escalfados en mantequilla clarificada de vaca local. Textura sedosa y sabor profundo.',
-    ingredients: ['Langosta roja', 'Arroz Acquerello', 'Azafrán', 'Mantequilla local', 'Brotes'],
-    pairing: 'Chardonnay · Far Niente · Napa Valley'
-  },
-  {
-    id: 3,
-    course: 'Tercer tiempo · El Fuego',
-    season: 'Pesca del día',
-    name: 'Pargo a la Leña',
-    image: dish3,
-    desc: 'Filete de pargo rojo cocinado a fuego abierto con madera de cafeto, servido sobre una base de puré de plátano macho ahumado y reducción de tamarindo. El sabor de las brasas salvadoreñas.',
-    ingredients: ['Pargo rojo', 'Plátano macho', 'Madera de cafeto', 'Tamarindo', 'Cebollines'],
-    pairing: 'Pinot Noir · Erath · Oregon'
-  },
-  {
-    id: 4,
-    course: 'Cuarto tiempo · Refrescante',
-    season: 'Verano Eterno',
-    name: 'Tiradito de Pulpo y Mango',
-    image: dish4,
-    desc: 'Láminas de pulpo de roca de La Libertad maceradas en leche de tigre de mango verde y ají limo, con crujiente de yuca y aceite de cilantro. Un contraste vibrante entre la acidez y el dulzor tropical.',
-    ingredients: ['Pulpo de roca', 'Mango verde', 'Ají limo', 'Yuca', 'Aceite de cilantro'],
-    pairing: 'Sauvignon Blanc · Cloudy Bay · NZ'
-  },
-  {
-    id: 5,
-    course: 'Quinto tiempo · El Huerto',
-    season: 'Cosecha Local',
-    name: 'Carpaccio de Remolacha Asada',
-    image: dish5,
-    desc: 'Remolachas orgánicas de nuestra hacienda asadas en costra de sal, servidas con queso de cabra artesanal, nueces garrapiñadas en piloncillo y reducción de balsámico añejo. Un plato de tierra con alma de mar.',
-    ingredients: ['Remolacha hacienda', 'Queso de cabra', 'Nueces', 'Piloncillo', 'Flores'],
-    pairing: 'Nebbiolo · G.D. Vajra · Langhe'
-  },
-  {
-    id: 6,
-    course: 'Petit four del mar',
-    season: 'Todo el año',
-    name: 'Sorbet de Coco y Sal de Mar',
-    image: dish6,
-    desc: 'Postre refrescante elaborado con leche de coco recién extraída de los cocoteros de la hacienda, cristales de sal marina artesanal y ralladura de lima kaffir. Limpieza perfecta del paladar.',
-    ingredients: ['Coco hacienda', 'Sal artesanal', 'Lima kaffir', 'Miel de abeja', 'Menta fresca'],
-    pairing: "Moscato d'Asti · G.D. Vajra · Piemonte"
-  }
+  { id: 1, image: dish1 },
+  { id: 2, image: dish2 },
+  { id: 3, image: dish3 },
+  { id: 4, image: dish4 },
+  { id: 5, image: dish5 },
+  { id: 6, image: dish6 }
 ];
 
 const Dining = () => {
   useScrollCinema();
+  const { t, language, translations } = useLanguage();
 
+  // Handle page title and SEO description updates when language changes
   useEffect(() => {
-    document.title = "Gastronomía | Casa d'Oro - Alta Cocina del Mar";
-
+    document.title = t('seoTitle', 'dining');
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', "Descubra la experiencia gastronómica de Casa d'Oro. Alta cocina del mar inspirada en Michelin, ingredientes locales y un ambiente de lujo relajado frente al Pacífico.");
+      metaDescription.setAttribute('content', t('seoDesc', 'dining'));
     }
+  }, [language, t]);
 
+  useEffect(() => {
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.innerHTML = JSON.stringify([
@@ -109,7 +59,7 @@ const Dining = () => {
         '@type': 'Person',
         name: 'Matteo Solís',
         jobTitle: 'Chef Ejecutivo',
-        description: "Chef de alta cocina del mar en Casa d'Oro, El Tunco, El Salvador. Formado en restaurantes Michelin de Italia y Francia.",
+        description: "Chef de alta cocina del mar en Casa d'Oro, El Tunco, El Salvador. Formado en restaurants Michelin de Italia y Francia.",
         worksFor: {
           '@type': 'Restaurant',
           name: "Casa d'Oro"
@@ -266,6 +216,21 @@ const Dining = () => {
     };
   }, []);
 
+  // Map dishes to translations
+  const localizedDishes = DISHES_EDITORIAL.map(dish => {
+    const key = `dish${dish.id}`;
+    const localDish = translations?.dining?.dishes?.[key] || {};
+    return {
+      ...dish,
+      course: localDish.course || '',
+      season: localDish.season || '',
+      name: localDish.name || '',
+      desc: localDish.desc || '',
+      ingredients: localDish.ingredients || [],
+      pairing: localDish.pairing || ''
+    };
+  });
+
   return (
     <div className={styles.page}>
 
@@ -275,18 +240,18 @@ const Dining = () => {
         <div className={styles.heroContent}>
           <div className={styles.heroStars}>
             <span className={styles.starLine} />
-            <span className={styles.starText}>✦ Alta Cocina del Mar ✦</span>
+            <span className={styles.starText}>{t('starText', 'dining')}</span>
             <span className={styles.starLine} />
           </div>
           <h1 className={styles.heroTitle}>
-            {"La Experiencia".split('').map((char, index) => (
+            {t('heroTitle1', 'dining').split('').map((char, index) => (
               <span key={index} className={styles.char}>
                 {char === ' ' ? '\u00A0' : char}
               </span>
             ))}
             <br />
             <em className={styles.goldGradientText}>
-              {"Gastronómica".split('').map((char, index) => (
+              {t('heroTitle2', 'dining').split('').map((char, index) => (
                 <span key={index} className={styles.char}>
                   {char === ' ' ? '\u00A0' : char}
                 </span>
@@ -294,22 +259,27 @@ const Dining = () => {
             </em>
           </h1>
           <p className={styles.heroSub}>
-            Donde el Pacífico dicta el menú<br />y el tiempo se mide en mareas.
+            {t('heroSub', 'dining').split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                {index < t('heroSub', 'dining').split('\n').length - 1 && <br />}
+              </span>
+            ))}
           </p>
           <div className={styles.heroPillars}>
             <div className={styles.pillar}>
               <span className={styles.pillarIcon}>◈</span>
-              <span className={styles.pillarText}>Ingrediente Local</span>
+              <span className={styles.pillarText}>{t('pillar1', 'dining')}</span>
             </div>
             <span className={styles.pillarDiv} />
             <div className={styles.pillar}>
               <span className={styles.pillarIcon}>◈</span>
-              <span className={styles.pillarText}>Técnica Michelin</span>
+              <span className={styles.pillarText}>{t('pillar2', 'dining')}</span>
             </div>
             <span className={styles.pillarDiv} />
             <div className={styles.pillar}>
               <span className={styles.pillarIcon}>◈</span>
-              <span className={styles.pillarText}>Vista al Pacífico</span>
+              <span className={styles.pillarText}>{t('pillar3', 'dining')}</span>
             </div>
           </div>
         </div>
@@ -321,26 +291,38 @@ const Dining = () => {
           <span className={styles.statementNum}>01</span>
           <div className={styles.statementContent}>
             <blockquote className={styles.statementQuote}>
-              "Cocinamos con el ritmo de las mareas y el alma de la tierra salvadoreña."
+              "{t('statementQuote', 'dining')}"
             </blockquote>
             <p className={styles.statementBody}>
-              En Casa d'Oro, la gastronomía es un diálogo entre el Pacífico y los huertos orgánicos de nuestra hacienda. Cada plato es una obra de arte efímera que celebra la pureza del ingrediente y la sofisticación de la técnica. Trabajamos con los mejores productores locales de La Libertad: pescadores artesanales, agricultores volcánicos y cafetaleros de linaje centenario.
+              {t('statementBody', 'dining')}
             </p>
           </div>
           <div className={styles.statementCreds}>
             <div className={styles.cred}>
               <span className={styles.credNum}>9</span>
-              <span className={styles.credLabel}>Tiempos<br />degustación</span>
+              <span className={styles.credLabel}>
+                {(language === 'es' ? 'Tiempos\ndegustación' : 'Tasting\ncourses').split('\n').map((l, i) => (
+                  <span key={i}>{l}{i === 0 && <br />}</span>
+                ))}
+              </span>
             </div>
             <div className={styles.credLine} />
             <div className={styles.cred}>
               <span className={styles.credNum}>100%</span>
-              <span className={styles.credLabel}>Ingredientes<br />de origen local</span>
+              <span className={styles.credLabel}>
+                {(language === 'es' ? 'Ingredientes\nde origen local' : 'Locally\nsourced ingredients').split('\n').map((l, i) => (
+                  <span key={i}>{l}{i === 0 && <br />}</span>
+                ))}
+              </span>
             </div>
             <div className={styles.credLine} />
             <div className={styles.cred}>
               <span className={styles.credNum}>∞</span>
-              <span className={styles.credLabel}>Vistas<br />al Pacífico</span>
+              <span className={styles.credLabel}>
+                {(language === 'es' ? 'Vistas\nal Pacífico' : 'Pacific\nocean views').split('\n').map((l, i) => (
+                  <span key={i}>{l}{i === 0 && <br />}</span>
+                ))}
+              </span>
             </div>
           </div>
         </div>
@@ -350,21 +332,27 @@ const Dining = () => {
       <section className={styles.menu} id="menu">
         <div className={styles.menuHeader}>
           <div className={styles.menuHeaderContent}>
-            <span className={styles.menuEyebrow}>Menú de Temporada</span>
-            <h2 className={styles.menuTitle}>Los Platos <em>Insignia</em></h2>
+            <span className={styles.menuEyebrow}>{t('menuEyebrow', 'dining')}</span>
+            <h2 className={styles.menuTitle}>
+              {language === 'es' ? (
+                <>Los Platos <em>Insignia</em></>
+              ) : (
+                <>{t('menuTitle', 'dining')} <em>{t('menuSubtitle', 'dining')}</em></>
+              )}
+            </h2>
           </div>
           <div className={styles.menuHeaderRight}>
             <p className={styles.menuNote}>
-              Menú sujeto a disponibilidad de pesca y temporada. Todos los ingredientes son de origen local y trazable.
+              {t('menuNote', 'dining')}
             </p>
             <div className={styles.menuSeasonBadge}>
               <span className={styles.seasonDot} />
-              <span>Menú actual · Temporada del Pacífico</span>
+              <span>{t('menuSeason', 'dining')}</span>
             </div>
           </div>
         </div>
 
-        {DISHES_EDITORIAL.map((dish, i) => (
+        {localizedDishes.map((dish, i) => (
           <div
             key={dish.id}
             className={`${styles.dishRow} ${i % 2 !== 0 ? styles.dishRowReverse : ''}`}
@@ -388,7 +376,9 @@ const Dining = () => {
                 ))}
               </div>
               <div className={styles.dishPairing}>
-                <span className={styles.pairingLabel}>Maridaje sugerido</span>
+                <span className={styles.pairingLabel}>
+                  {language === 'es' ? 'Maridaje sugerido' : 'Suggested pairing'}
+                </span>
                 <span className={styles.pairingValue}>{dish.pairing}</span>
               </div>
             </div>
@@ -396,10 +386,10 @@ const Dining = () => {
         ))}
       </section>
 
-      {/* 4. CHEF — Rediseño editorial completo */}
+      {/* 4. CHEF */}
       <section className={styles.chef} id="el-chef">
 
-        {/* PARTE 1: HERO — foto full-height izq + contenido dcha */}
+        {/* PARTE 1: HERO */}
         <div className={styles.chefHero}>
 
           <div className={styles.chefPhotoWrap}>
@@ -411,104 +401,77 @@ const Dining = () => {
             <div className={styles.chefPhotoFade} />
             <div className={styles.chefPhotoBadge}>
               <span className={styles.badgeLine} />
-              <span className={styles.badgeText}>Alta Cocina Descalza</span>
+              <span className={styles.badgeText}>
+                {language === 'es' ? 'Alta Cocina Descalza' : 'Barefoot Haute Cuisine'}
+              </span>
               <span className={styles.badgeLine} />
             </div>
           </div>
 
           <div className={styles.chefHeroContent}>
-            <span className={styles.chefEyebrow}>El Alma de la Cocina</span>
+            <span className={styles.chefEyebrow}>{t('chefEyebrow', 'dining')}</span>
 
             <div className={styles.chefNameWrap}>
-              <h2 className={styles.chefFirstName}>Matteo</h2>
-              <h2 className={styles.chefLastName}><em>Solís</em></h2>
+              <h2 className={styles.chefFirstName}>{t('chefFirstName', 'dining')}</h2>
+              <h2 className={styles.chefLastName}><em>{t('chefLastName', 'dining')}</em></h2>
             </div>
 
-            <p className={styles.chefRole}>El Arquitecto del Sabor Tropical</p>
+            <p className={styles.chefRole}>
+              {language === 'es' ? 'El Arquitecto del Sabor Tropical' : 'The Architect of Tropical Flavor'}
+            </p>
             <div className={styles.chefDivider} />
 
             <p className={styles.chefBio}>
-              Perfeccionista por naturaleza, Matteo define su cocina como{' '}
-              <em>"Alta Cocina Descalza"</em>.
-              No cocina para impresionar — cocina para conectar. Cada ingrediente
-              es recolectado a mano en los jardines de la hacienda o traído
-              directamente del arrecife de El Tunco.
+              {t('chefBio', 'dining')}
             </p>
 
             <blockquote className={styles.chefQuote}>
-              "El emplatado es un acto de meditación.
-              Cada plato cuenta una historia de la costa."
+              {t('chefQuote', 'dining')}
             </blockquote>
 
             <div className={styles.chefStatsRow}>
               <div className={styles.chefStat}>
                 <span className={styles.chefStatN}>10+</span>
-                <span className={styles.chefStatL}>Años Michelin</span>
+                <span className={styles.chefStatL}>{t('chefStatsLabel1', 'dining')}</span>
               </div>
               <div className={styles.chefStatDiv} />
               <div className={styles.chefStat}>
                 <span className={styles.chefStatN}>2</span>
-                <span className={styles.chefStatL}>Países Europa</span>
+                <span className={styles.chefStatL}>{t('chefStatsLabel2', 'dining')}</span>
               </div>
               <div className={styles.chefStatDiv} />
               <div className={styles.chefStat}>
                 <span className={styles.chefStatN}>∞</span>
-                <span className={styles.chefStatL}>Recetas Pacífico</span>
+                <span className={styles.chefStatL}>{t('chefStatsLabel3', 'dining')}</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* PARTE 2: HISTORIA — 3 cols fondo oscuro */}
+        {/* PARTE 2: HISTORIA — 2 cols fondo oscuro */}
         <div className={styles.chefStory}>
           <div className={styles.chefStoryHeader}>
             <span className={styles.storyEyebrow}>
               <span className={styles.storyEyebrowLine} />
-              Un Regreso al Origen
+              {t('chefStoryEyebrow', 'dining')}
               <span className={styles.storyEyebrowLine} />
             </span>
           </div>
 
           <div className={styles.chefStoryGrid}>
-
             <div className={styles.storyCol}>
               <span className={styles.storyColNum}>01</span>
-              <h3 className={styles.storyColTitle}>El Origen</h3>
-              <p className={styles.storyColText}>
-                Nacido a pocos kilómetros de El Tunco, Matteo creció entre el aroma
-                del café de las fincas de su familia y el aire salado del Pacífico.
-                De linaje cafetalero, su verdadera pasión siempre fue el mar.
-              </p>
+              <h3 className={styles.storyColTitle}>{t('chefStoryCol1Title', 'dining')}</h3>
+              <p className={styles.storyColText}>{t('chefStoryCol1Text', 'dining')}</p>
             </div>
 
             <div className={styles.storyColLine} />
 
             <div className={styles.storyCol}>
               <span className={styles.storyColNum}>02</span>
-              <h3 className={styles.storyColTitle}>La Formación Europea</h3>
-              <p className={styles.storyColText}>
-                A los 20 años partió a Europa. Años formativos en cocinas Michelin
-                en la costa de Amalfi, Italia, y en la Provenza, Francia. Dominó la
-                técnica europea sin perder el alma salvadoreña.
-              </p>
-              <div className={styles.storyTags}>
-                <span className={styles.storyTag}>Amalfi · Italia</span>
-                <span className={styles.storyTag}>Provenza · Francia</span>
-              </div>
+              <h3 className={styles.storyColTitle}>{t('chefStoryCol2Title', 'dining')}</h3>
+              <p className={styles.storyColText}>{t('chefStoryCol2Text', 'dining')}</p>
             </div>
-
-            <div className={styles.storyColLine} />
-
-            <div className={styles.storyCol}>
-              <span className={styles.storyColNum}>03</span>
-              <h3 className={styles.storyColTitle}>El Regreso</h3>
-              <p className={styles.storyColText}>
-                En Casa d'Oro, Matteo no solo alimenta — reconecta a los huéspedes
-                con la tierra y el mar de El Salvador. Un ceviche en piedra volcánica.
-                Un ron añejo local. La alta cocina de la herencia costera.
-              </p>
-            </div>
-
           </div>
         </div>
 
@@ -518,27 +481,29 @@ const Dining = () => {
 
           <div className={styles.chefTableInner}>
             <div className={styles.chefTableContent}>
-              <span className={styles.tableEyebrow}>La Experiencia Definitiva</span>
+              <span className={styles.tableEyebrow}>
+                {language === 'es' ? 'La Experiencia Definitiva' : 'The Ultimate Experience'}
+              </span>
               
               <h2 className={styles.tableTitle}>
-                9 tiempos.<br />
-                <em>Un chef. El Pacífico.</em>
+                {language === 'es' ? (
+                  <>9 tiempos.<br /><em>Un chef. El Pacífico.</em></>
+                ) : (
+                  <>9 courses.<br /><em>One chef. The Pacific.</em></>
+                )}
               </h2>
 
               <p className={styles.tableDesc}>
-                Ocho sillas. Un chef. El Pacífico como telón de fondo. 
-                Una narrativa culinaria que celebra la pureza del producto salvadoreño 
-                a través de la técnica Michelin. No hay carta. No hay prisa.
+                {t('tableDesc', 'dining')}
               </p>
 
               <div className={styles.tableStats}>
                 {[
-                  { n: '9',  l: 'Tiempos' },
-                  { n: '8',  l: 'Sillas' },
-                  { n: '3h', l: 'Inmersión' },
-                  { n: '7d', l: 'Pre-reserva' },
-                ].map(s => (
-                  <div key={s.l} className={styles.tableStat}>
+                  { n: t('tableStatValue1', 'dining'), l: t('tableStatLabel1', 'dining') },
+                  { n: t('tableStatValue2', 'dining'), l: t('tableStatLabel2', 'dining') },
+                  { n: t('tableStatValue3', 'dining'), l: t('tableStatLabel3', 'dining') },
+                ].map((s, idx) => (
+                  <div key={idx} className={styles.tableStat}>
                     <span className={styles.tableStatN}>{s.n}</span>
                     <span className={styles.tableStatL}>{s.l}</span>
                   </div>
@@ -547,17 +512,22 @@ const Dining = () => {
 
               <div className={styles.tableActions}>
                 <a href="/contacto" className={styles.tableCta}>
-                  Solicitar reservación
+                  {t('tableCta', 'dining')}
                   <span className={styles.tableCtaArrow}>→</span>
                 </a>
-                <p className={styles.tableNote}>Disponibilidad limitada · Solo bajo reserva previa</p>
+                <p className={styles.tableNote}>
+                  {language === 'es' ? 'Disponibilidad limitada · Solo bajo reserva previa' : 'Limited availability · Only upon prior reservation'}
+                </p>
               </div>
             </div>
 
             <div className={styles.chefTableSide}>
               <p className={styles.tableQuote}>
-                "Cocinamos con el ritmo de las mareas<br />
-                y el alma de nuestra tierra."
+                {language === 'es' ? (
+                  <>"Cocinamos con el ritmo de las mareas<br />y el alma de nuestra tierra."</>
+                ) : (
+                  <>"We cook with the rhythm of the tides<br />and the soul of our land."</>
+                )}
               </p>
             </div>
           </div>
@@ -569,17 +539,17 @@ const Dining = () => {
       <section className={styles.cta}>
         <div className="container">
           <h2 className={styles.resTitle}>
-            Asegure su lugar <em>en el paraíso</em>
+            {t('resTitle', 'dining')}
           </h2>
           <p className={styles.resSub}>
-            Disponibilidad limitada. Se recomienda reservar con antelación para experiencias personalizadas.
+            {t('resSub', 'dining')}
           </p>
           <div className={styles.btnGroup}>
             <a href="https://wa.me/50312345678" className={styles.btnPrimary} target="_blank" rel="noopener noreferrer">
-              Reservar Mesa
+              {t('resBtn', 'dining')}
             </a>
             <a href="/menu-completo.pdf" className={styles.btnSecondary} target="_blank">
-              Ver Menú Completo
+              {language === 'es' ? 'Ver Menú Completo' : 'View Full Menu'}
             </a>
           </div>
         </div>
@@ -590,3 +560,4 @@ const Dining = () => {
 };
 
 export default Dining;
+

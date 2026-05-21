@@ -7,6 +7,7 @@ import styles from './Home.module.css';
 import { useScrollCinema } from '../hooks/useScrollCinema';
 import { useSuites } from '../hooks/useSuites';
 import SectionArrow from '../components/SectionArrow';
+import { useLanguage } from '../context/LanguageContext';
 
 const FALLBACK_SUITES = [
   {
@@ -40,6 +41,7 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const Home = () => {
   useScrollCinema();
   const { suites = [] } = useSuites();
+  const { t, language, translations } = useLanguage();
   const displaySuites = suites && suites.length > 0 ? suites : FALLBACK_SUITES;
   const containerRef = useRef(null);
   const heroRef = useRef(null);
@@ -58,6 +60,14 @@ const Home = () => {
       ease: 'power2.out'
     });
   };
+
+  useEffect(() => {
+    document.title = t('seoTitle', 'home');
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', t('seoDesc', 'home'));
+    }
+  }, [language, t]);
 
   useEffect(() => {
     // Forzar scroll al inicio y prevenir restauración automática del navegador
@@ -225,12 +235,12 @@ const Home = () => {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [t]);
 
   return (
     <div ref={containerRef}>
       <h1 className={styles.srOnly}>
-        Casa d'Oro — Hotel Boutique de Lujo en El Tunco, El Salvador
+        {t('seoTitle', 'home')}
       </h1>
 
       {/* PRELOADER */}
@@ -297,7 +307,7 @@ const Home = () => {
             }}
             aria-label="Ir a la siguiente sección"
           >
-            <span className={styles.scrollText}>Descubre más</span>
+            <span className={styles.scrollText}>{t('discoverMore', 'home')}</span>
             <div className={styles.scrollLine}>
               <div className={styles.scrollLineInner} />
             </div>
@@ -309,7 +319,7 @@ const Home = () => {
       <section id="legado" className={styles.storySection}>
         <div className={styles.sectionEyebrow}>
           <span className={styles.eyebrowLine} />
-          <span className={styles.eyebrowLabel}>EL LEGADO</span>
+          <span className={styles.eyebrowLabel}>{t('theLegacy', 'home')}</span>
         </div>
 
 
@@ -317,7 +327,7 @@ const Home = () => {
           {/* Column 1: Pull Quote */}
           <div className={styles.storyQuoteCol}>
             <blockquote className={`${styles.storyQuote} reveal-up`}>
-              Aquí, el lujo es descalzo y el silencio es dorado.
+              {t('storyQuote', 'home')}
             </blockquote>
             <div className={styles.quoteAttribution}>
               <span className={styles.attrLine} />
@@ -337,14 +347,9 @@ const Home = () => {
               <path d="M14 24 L14 28"/>
               <path d="M10 26 L18 26"/>
             </svg>
-            <h3 className={styles.colEyebrow}>LOS ORÍGENES</h3>
+            <h3 className={styles.colEyebrow}>{t('originsTitle', 'home')}</h3>
             <p>
-              Construida originalmente en los años 50 como residencia 
-              de verano privada de una reconocida familia cafetalera salvadoreña, 
-              Casa d'Oro ha sido el secreto mejor guardado de la élite centroamericana 
-              durante décadas. Mucho antes de que El Tunco se convirtiera en sinónimo 
-              de surf de clase mundial, esta hacienda ya era la dirección más discreta 
-              de la costa Pacífica de El Salvador.
+              {t('originsText', 'home')}
             </p>
           </div>
 
@@ -356,13 +361,9 @@ const Home = () => {
               <line x1="3" y1="24" x2="25" y2="24"/>
               <line x1="6" y1="18" x2="22" y2="18"/>
             </svg>
-            <h3 className={styles.colEyebrow}>LA RESTAURACIÓN</h3>
+            <h3 className={styles.colEyebrow}>{t('restorationTitle', 'home')}</h3>
             <p>
-              Tras una restauración meticulosa que preservó cada 
-              arco de su arquitectura original de hacienda tropical — los altos techos 
-              de terracota, los patios interiores abiertos al cielo — Casa d'Oro 
-              resurge hoy como el retiro boutique más exclusivo de El Tunco. Aquí, 
-              en la costa de La Libertad, el tiempo se mide por las mareas y las olas.
+              {t('restorationText', 'home')}
             </p>
           </div>
         </div>
@@ -376,31 +377,35 @@ const Home = () => {
       <section id="suites" className={styles.suitesPreview}>
         <div className="container">
           <h2 className="reveal-headline" style={{ color: 'var(--text-light)', letterSpacing: '0.2em', textTransform: 'uppercase', fontSize: '1.25rem', fontWeight: 300, marginBottom: '32px' }}>
-            Santuarios Privados frente al Mar en El Tunco
+            {t('suitesHeading', 'home')}
           </h2>
           <div className={styles.previewGrid}>
             {displaySuites.map((suite) => {
               const imageFallback = suite.slug === 'planter-loft' ? '/suites/planters-loft.png' : `/suites/${suite.slug}.png`;
               const imageUrl = suite.imagen_hero_url || imageFallback;
+              const suiteTrans = translations?.suites?.suiteData?.[suite.slug];
+              const suiteName = suiteTrans?.nombre || suite.nombre;
+              const suiteType = suiteTrans?.tipo || suite.tipo;
+
               return (
                 <div key={suite.slug} className={`${styles.cardGlowWrapper} reveal-scale`}>
                   <div 
                     className={styles.suiteCard}
-                    aria-label={`${suite.nombre} — suite privada en Casa d'Oro, El Tunco`}
+                    aria-label={`${suiteName} — suite privada en Casa d'Oro, El Tunco`}
                   >
                     <img 
                       src={imageUrl} 
-                      alt={suite.nombre} 
+                      alt={suiteName} 
                       className={styles.suiteImage} 
                     />
                     <div className={styles.cardDarken} />
                     <div className={styles.cardOverlay}>
                       <p style={{ fontFamily: 'var(--font-smallcaps)', fontSize: '0.8rem', fontWeight: 500, color: '#C9A96E', letterSpacing: '0.25em', marginBottom: '8px' }}>
-                        {suite.tipo}
+                        {suiteType}
                       </p>
-                      <h3 className={styles.suiteTitle}>{suite.nombre}</h3>
+                      <h3 className={styles.suiteTitle}>{suiteName}</h3>
                       <Link to={`/reservar/${suite.slug}`} className={styles.suiteDesc} style={{ textDecoration: 'none' }}>
-                        Explorar Santuario →
+                        {t('exploreSantuario', 'home')}
                       </Link>
                     </div>
                   </div>
@@ -410,7 +415,7 @@ const Home = () => {
           </div>
           <div className="reveal-up" style={{ marginTop: '60px', textAlign: 'center' }}>
             <Link to="/suites" className="hover-trigger" style={{ color: '#C9A96E', textTransform: 'uppercase', letterSpacing: '0.25em', fontSize: '0.95rem', fontWeight: 500, fontFamily: 'var(--font-smallcaps)', textDecoration: 'none' }}>
-              Explorar Todas las Suites →
+              {t('exploreAllSuites', 'home')}
             </Link>
           </div>
         </div>
@@ -425,11 +430,11 @@ const Home = () => {
         <div className={styles.quoteBlock}>
           <span className={styles.quoteEyebrow}>
             <span className={styles.eyebrowLine} />
-            <span className={styles.eyebrowText}>Nuestra Filosofía</span>
+            <span className={styles.eyebrowText}>{t('ourPhilosophy', 'home')}</span>
             <span className={styles.eyebrowLine} />
           </span>
           <blockquote className={`${styles.quoteMain} ${styles.goldGradientText}`}>
-            "No construimos un hotel. Restauramos una leyenda."
+            {t('philosophyQuote', 'home')}
           </blockquote>
           <p className={styles.quoteSub}>
             Casa d'Oro — El Tunco, El Salvador
@@ -444,7 +449,7 @@ const Home = () => {
 
           {/* Columna 1 — Contacto */}
           <div className={styles.infoCol}>
-            <span className={styles.infoEyebrow}>Contacto</span>
+            <span className={styles.infoEyebrow}>{t('contact', 'nav')}</span>
             <ul className={styles.infoList}>
               <li className={styles.infoItem}>
                 <span className={styles.infoIcon}>
@@ -455,7 +460,7 @@ const Home = () => {
                     <path d="M6 3.5 L6 6 L8 7.5"/>
                   </svg>
                 </span>
-                <span>Check-in: 3:00 PM</span>
+                <span>{t('checkIn', 'home')}</span>
               </li>
               <li className={styles.infoItem}>
                 <span className={styles.infoIcon}>
@@ -466,7 +471,7 @@ const Home = () => {
                     <path d="M6 3.5 L6 6 L8 7.5"/>
                   </svg>
                 </span>
-                <span>Check-out: 12:00 PM</span>
+                <span>{t('checkOut', 'home')}</span>
               </li>
               <li className={styles.infoItem}>
                 <span className={styles.infoIcon}>
@@ -496,7 +501,7 @@ const Home = () => {
 
           {/* Columna 2 — Ubicación */}
           <div className={styles.infoCol}>
-            <span className={styles.infoEyebrow}>Ubicación</span>
+            <span className={styles.infoEyebrow}>{language === 'es' ? 'Ubicación' : 'Location'}</span>
             <ul className={styles.infoList}>
               <li className={styles.infoItem}>
                 <span className={styles.infoIcon}>
@@ -538,38 +543,38 @@ const Home = () => {
                     <path d="M1 6 L4 3 L8 9 L10 7 L11 8"/>
                   </svg>
                 </span>
-                <span>1h desde San Salvador</span>
+                <span>{t('hourFrom', 'home')}</span>
               </li>
             </ul>
           </div>
 
           {/* Columna 3 — Links rápidos */}
           <div className={styles.infoCol}>
-            <span className={styles.infoEyebrow}>Explora</span>
+            <span className={styles.infoEyebrow}>{t('exploreTitle', 'home')}</span>
             <ul className={styles.infoList}>
               <li className={styles.infoItem}>
                 <Link to="/suites" className={styles.infoLink}>
-                  Las Suites →
+                  {t('suites', 'nav')} →
                 </Link>
               </li>
               <li className={styles.infoItem}>
                 <Link to="/dining" className={styles.infoLink}>
-                  Gastronomía →
+                  {t('dining', 'nav')} →
                 </Link>
               </li>
               <li className={styles.infoItem}>
                 <Link to="/wellness" className={styles.infoLink}>
-                  Bienestar & Surf →
+                  {t('wellness', 'nav')} →
                 </Link>
               </li>
               <li className={styles.infoItem}>
                 <Link to="/contact" className={styles.infoLink}>
-                  Contacto →
+                  {t('contact', 'nav')} →
                 </Link>
               </li>
               <li className={styles.infoItem}>
                 <Link to="/login" className={styles.infoLink}>
-                  Iniciar sesión →
+                  {t('login', 'nav')} →
                 </Link>
               </li>
             </ul>
@@ -581,7 +586,7 @@ const Home = () => {
         <div className={`${styles.mapWrapper} relative w-full`}>
           <div className={styles.mapContainer}>
             <div className={styles.mapHeader}>
-              <span className={styles.mapHeaderLeft}>CÓMO LLEGAR</span>
+              <span className={styles.mapHeaderLeft}>{t('howToGetThere', 'home')}</span>
               <span className={styles.mapHeaderRight}>El Tunco, La Libertad, El Salvador</span>
             </div>
             <iframe
@@ -599,7 +604,7 @@ const Home = () => {
             rel="noopener noreferrer"
             className={styles.mapCta}
           >
-            Abrir en Google Maps →
+            {t('openGoogleMaps', 'home')}
           </a>
         </div>
 
@@ -609,7 +614,7 @@ const Home = () => {
           <div className={styles.footerContent}>
             <span className={styles.footerLogo}>Casa d'Oro</span>
             <span className={styles.footerMeta}>
-              © 2024 · El Tunco, La Libertad, El Salvador
+              © 2024 · {t('address', 'footer')}
             </span>
             <span className={styles.footerMeta}>
               Est. 1952

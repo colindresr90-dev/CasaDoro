@@ -4,6 +4,7 @@ import styles from './Navigation.module.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth, useUser, useClerk } from '@clerk/clerk-react';
 import { useAdmin } from '../hooks/useAdmin';
+import { useLanguage } from '../context/LanguageContext';
 
 
 const Navigation = () => {
@@ -19,6 +20,7 @@ const Navigation = () => {
   const { isAdmin } = useAdmin();
   const { signOut } = useClerk();
   const navigate = useNavigate();
+  const { language, setLanguage, t } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [atTop, setAtTop] = useState(true);
 
@@ -49,10 +51,10 @@ const Navigation = () => {
   }, [location]);
 
   const navLinks = [
-    { name: 'Las Suites', path: '/suites' },
-    { name: 'Gastronomía', path: '/dining' },
-    { name: 'Bienestar & Surf', path: '/wellness' },
-    { name: 'Contacto', path: '/contact' },
+    { name: t('suites', 'nav'), path: '/suites' },
+    { name: t('dining', 'nav'), path: '/dining' },
+    { name: t('wellness', 'nav'), path: '/wellness' },
+    { name: t('contact', 'nav'), path: '/contact' },
   ];
 
   return (
@@ -77,6 +79,24 @@ const Navigation = () => {
               {link.name}
             </Link>
           ))}
+          
+          {/* Selector de idioma ES | EN */}
+          <div className={styles.langSelector}>
+            <button 
+              className={`${styles.langBtn} ${language === 'es' ? styles.langActive : ''}`} 
+              onClick={() => setLanguage('es')}
+            >
+              ES
+            </button>
+            <span className={styles.langDivider}>|</span>
+            <button 
+              className={`${styles.langBtn} ${language === 'en' ? styles.langActive : ''}`} 
+              onClick={() => setLanguage('en')}
+            >
+              EN
+            </button>
+          </div>
+
           {/* Área de auth — reemplaza el botón RESERVAR */}
           <div className={styles.navAuthArea}>
             {!isLoaded ? (
@@ -144,7 +164,7 @@ const Navigation = () => {
                           <path d="M1 13 C1 10 4 8 7 8 
                             C10 8 13 10 13 13"/>
                         </svg>
-                        Mi cuenta
+                        {t('myAccount', 'nav')}
                       </Link>
 
                       <Link
@@ -160,14 +180,14 @@ const Navigation = () => {
                           <path d="M5 1 L5 4"/>
                           <path d="M9 1 L9 4"/>
                         </svg>
-                        Mis reservaciones
+                        {t('myReservations', 'nav')}
                       </Link>
 
                       {/* Opciones de admin — solo si isAdmin */}
                       {isAdmin && (
                         <>
                           <span className={styles.dropdownSection}>
-                            Administración
+                            {t('adminHeader', 'nav')}
                           </span>
 
                           <Link
@@ -209,7 +229,7 @@ const Navigation = () => {
                           <path d="M13 7 L5 7"/>
                           <path d="M5 1 L1 1 L1 13 L5 13"/>
                         </svg>
-                        Cerrar sesión
+                        {t('logout', 'nav')}
                       </button>
 
                     </div>
@@ -219,7 +239,7 @@ const Navigation = () => {
             ) : (
               // Usuario no autenticado — botón RESERVAR actual
               <Link to="/login" className={styles.cta}>
-                Iniciar sesión
+                {t('login', 'nav')}
               </Link>
             )}
           </div>
@@ -251,6 +271,23 @@ const Navigation = () => {
                 </Link>
               ))}
               
+              {/* Selector de idioma en móvil */}
+              <div className={styles.mobileLangSelector}>
+                <button 
+                  className={`${styles.mobileLangBtn} ${language === 'es' ? styles.mobileLangActive : ''}`} 
+                  onClick={() => setLanguage('es')}
+                >
+                  ESPAÑOL
+                </button>
+                <span className={styles.mobileLangDivider}>·</span>
+                <button 
+                  className={`${styles.mobileLangBtn} ${language === 'en' ? styles.mobileLangActive : ''}`} 
+                  onClick={() => setLanguage('en')}
+                >
+                  ENGLISH
+                </button>
+              </div>
+              
               {isLoaded && (
                 isSignedIn ? (
                   <>
@@ -260,16 +297,16 @@ const Navigation = () => {
                     </div>
                     
                     <Link to="/mi-cuenta" className={styles.mobileUserLink}>
-                      Mi cuenta
+                      {t('myAccount', 'nav')}
                     </Link>
                     
                     <Link to="/mis-reservaciones" className={styles.mobileUserLink}>
-                      Mis reservaciones
+                      {t('myReservations', 'nav')}
                     </Link>
                     
                     {isAdmin && (
                       <Link to="/admin" className={styles.mobileUserLink} style={{ color: 'var(--color-gold)', fontWeight: 500 }}>
-                        ✦ Panel Admin
+                        {t('adminPanel', 'nav')}
                       </Link>
                     )}
                     
@@ -281,12 +318,12 @@ const Navigation = () => {
                         setIsMenuOpen(false);
                       }}
                     >
-                      Cerrar sesión
+                      {t('logout', 'nav')}
                     </button>
                   </>
                 ) : (
                   <Link to="/login" className={styles.mobileLoginLink}>
-                    Iniciar sesión
+                    {t('login', 'nav')}
                   </Link>
                 )
               )}

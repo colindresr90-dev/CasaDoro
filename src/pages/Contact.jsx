@@ -2,25 +2,29 @@ import { useState, useEffect } from 'react';
 import styles from './Contact.module.css';
 import { useScrollCinema } from '../hooks/useScrollCinema';
 import gsap from 'gsap';
+import { useLanguage } from '../context/LanguageContext';
 
 const Contact = () => {
   useScrollCinema();
+  const { t, language, translations } = useLanguage();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     arrival: '',
     departure: '',
-    suite: 'Planter\'s Loft',
+    suite: "Planter's Loft",
     requests: ''
   });
 
   useEffect(() => {
-    document.title = "Contacto | Casa d'Oro – El Tunco, El Salvador";
+    document.title = t('seoTitle', 'contact');
     const meta = document.querySelector('meta[name="description"]');
     if (meta) {
-      meta.setAttribute('content', "Comienza tu estancia en Casa d'Oro en El Tunco. Reserva suites de lujo, planea tu retiro o solicita nuestro conserje privado.");
+      meta.setAttribute('content', t('seoDesc', 'contact'));
     }
+  }, [language, t]);
 
+  useEffect(() => {
     // Hero title animation
     const chars = document.querySelectorAll(`.${styles.char}`);
     if (chars.length > 0) {
@@ -54,12 +58,14 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form Submitted:', formData);
-    alert('Gracias por su solicitud. Nuestro conserje se pondrá en contacto con usted a la brevedad.');
+    alert(t('formSuccess', 'contact'));
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  const heroTitleText = t('heroTitle', 'contact');
 
   return (
     <div className={styles.page}>
@@ -67,14 +73,14 @@ const Contact = () => {
         <div className={styles.filmGrain} />
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            {"Encuéntranos".split('').map((char, index) => (
+            {heroTitleText.split('').map((char, index) => (
               <span key={index} className={styles.char}>
                 {char === ' ' ? '\u00A0' : char}
               </span>
             ))}
           </h1>
           <p className={styles.heroSub}>
-            El Tunco · La Libertad · El Salvador
+            {t('heroSub', 'contact')}
           </p>
         </div>
       </section>
@@ -82,10 +88,10 @@ const Contact = () => {
       <div className="container">
         <section className={styles.formSection}>
           <div className={`${styles.formContainer} reveal-left`}>
-            <h2 className="reveal-headline">Comienza tu Estancia</h2>
+            <h2 className="reveal-headline">{t('formTitle', 'contact')}</h2>
             <form className={`${styles.form} reveal-stagger`} onSubmit={handleSubmit}>
               <div className={styles.inputGroup}>
-                <label>Nombre Completo</label>
+                <label>{t('formName', 'contact')}</label>
                 <input 
                   type="text" 
                   name="name" 
@@ -97,7 +103,7 @@ const Contact = () => {
               </div>
               
               <div className={styles.inputGroup}>
-                <label>Correo electrónico</label>
+                <label>{t('formEmail', 'contact')}</label>
                 <input 
                   type="email" 
                   name="email" 
@@ -110,7 +116,7 @@ const Contact = () => {
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
                 <div className={styles.inputGroup}>
-                  <label>Fecha de llegada</label>
+                  <label>{t('formArrival', 'contact')}</label>
                   <input 
                     type="date" 
                     name="arrival" 
@@ -120,7 +126,7 @@ const Contact = () => {
                   />
                 </div>
                 <div className={styles.inputGroup}>
-                  <label>Fecha de salida</label>
+                  <label>{t('formDeparture', 'contact')}</label>
                   <input 
                     type="date" 
                     name="departure" 
@@ -132,53 +138,52 @@ const Contact = () => {
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Tipo de suite</label>
+                <label>{t('formSuite', 'contact')}</label>
                 <select name="suite" value={formData.suite} onChange={handleChange}>
-                  <option>Planter's Loft</option>
-                  <option>Reef Sanctuary</option>
-                  <option>Pacific Vault</option>
-                  <option>Casa d'Oro Master</option>
+                  <option value="Planter's Loft">{translations.suites?.suiteData?.['planter-loft']?.nombre || "Planter's Loft"}</option>
+                  <option value="Reef Sanctuary">{translations.suites?.suiteData?.['reef-sanctuary']?.nombre || "Reef Sanctuary"}</option>
+                  <option value="Pacific Vault">{translations.suites?.suiteData?.['pacific-vault']?.nombre || "Pacific Vault"}</option>
+                  <option value="Casa d'Oro Master">{translations.suites?.suiteData?.['master-suite']?.nombre || "Casa d'Oro Master"}</option>
                 </select>
               </div>
 
               <div className={styles.inputGroup}>
-                <label>Solicitudes especiales</label>
+                <label>{t('formRequests', 'contact')}</label>
                 <textarea 
                   name="requests" 
                   rows="4" 
                   value={formData.requests} 
                   onChange={handleChange} 
-                  placeholder="Preferencias de lino, requisitos dietéticos..."
+                  placeholder={t('formRequestsPlaceholder', 'contact')}
                 ></textarea>
               </div>
 
               <button type="submit" className={`${styles.submitBtn} hover-trigger`}>
-                Enviar solicitud
+                {t('formSubmit', 'contact')}
               </button>
             </form>
           </div>
 
           <div className={`${styles.infoContainer} reveal-right`}>
             <div className={`${styles.infoItem} reveal-up`}>
-              <h4>Dirección</h4>
+              <h4>{t('infoAddress', 'contact')}</h4>
               <p>Km 42.5 Lote 17, El Tunco, La Libertad</p>
             </div>
             <div className={`${styles.infoItem} reveal-up`}>
-              <h4>Conserjería WhatsApp</h4>
+              <h4>{t('infoWhatsapp', 'contact')}</h4>
               <p>+503 7788 9900</p>
             </div>
             <div className={`${styles.infoItem} reveal-up`}>
-              <h4>Consultas Generales</h4>
+              <h4>{t('infoQueries', 'contact')}</h4>
               <p>ciao@casadoro.sv</p>
             </div>
             
             <div className={`${styles.transferCard} reveal-scale`}>
               <p className={styles.transferQuote}>
-                "El viaje es tan silencioso como el destino."
+                {t('transferQuote', 'contact')}
               </p>
               <p className={styles.transferText}>
-                Traslados privados desde el aeropuerto de San Salvador (SAL) disponibles bajo petición. 
-                Tiempo promedio de viaje: 45 minutos.
+                {t('transferText', 'contact')}
               </p>
             </div>
           </div>
@@ -187,22 +192,22 @@ const Contact = () => {
 
       <section className={styles.surroundings}>
         <div className="container">
-          <h2 className={`${styles.surroundTitle} reveal-headline`}>Los Alrededores</h2>
+          <h2 className={`${styles.surroundTitle} reveal-headline`}>{t('surroundTitle', 'contact')}</h2>
           <div className={`${styles.surroundingsGrid} reveal-stagger`}>
             <div className={styles.surroundCard}>
-              <span className={styles.distance}>a solo 2 min</span>
-              <h5>El Tunco Village</h5>
-              <p>Cultura surf vibrante, mercados artesanales y el pulso de la costa salvadoreña.</p>
+              <span className={styles.distance}>{t('surroundCard1Distance', 'contact')}</span>
+              <h5>{t('surroundCard1Title', 'contact')}</h5>
+              <p>{t('surroundCard1Text', 'contact')}</p>
             </div>
             <div className={styles.surroundCard}>
-              <span className={styles.distance}>a solo 15 min</span>
-              <h5>El Zonte</h5>
-              <p>Conocida mundialmente como Bitcoin Beach, un centro de innovación y olas de clase mundial.</p>
+              <span className={styles.distance}>{t('surroundCard2Distance', 'contact')}</span>
+              <h5>{t('surroundCard2Title', 'contact')}</h5>
+              <p>{t('surroundCard2Text', 'contact')}</p>
             </div>
             <div className={styles.surroundCard}>
-              <span className={styles.distance}>a solo 20 min</span>
-              <h5>Mercado de La Libertad</h5>
-              <p>El corazón auténtico del comercio costero. Pesca fresca y artesanías locales.</p>
+              <span className={styles.distance}>{t('surroundCard3Distance', 'contact')}</span>
+              <h5>{t('surroundCard3Title', 'contact')}</h5>
+              <p>{t('surroundCard3Text', 'contact')}</p>
             </div>
           </div>
         </div>

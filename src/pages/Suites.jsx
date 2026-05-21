@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { getSuites } from '../lib/supabase';
 import styles from './Suites.module.css';
+import { useLanguage } from '../context/LanguageContext';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -64,6 +65,7 @@ const AMENITIES_FALLBACK = {
 export default function Suites() {
   const [suites, setSuites] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { t, language, translations } = useLanguage();
   const scrollRef = useRef(null);
   const heroRef = useRef(null);
   const sectionRefs = useRef([]);
@@ -76,6 +78,14 @@ export default function Suites() {
       ease: "power4.out"
     });
   };
+
+  useEffect(() => {
+    document.title = t('seoTitle', 'suites');
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', t('seoDesc', 'suites'));
+    }
+  }, [language, t]);
 
   useEffect(() => {
     const fetchSuites = async () => {
@@ -163,7 +173,7 @@ export default function Suites() {
     return (
       <div className={styles.loadingState}>
         <div className={styles.loader}></div>
-        <span>Cargando santuarios...</span>
+        <span>{t('loading', 'suites')}</span>
       </div>
     );
   }
@@ -171,9 +181,9 @@ export default function Suites() {
   if (suites.length === 0) {
     return (
       <div className={styles.emptyState}>
-        <h2>Próximamente</h2>
-        <p>Nuestras suites están siendo preparadas para su llegada.</p>
-        <Link to="/" className={styles.btnBack}>Volver al inicio</Link>
+        <h2>{t('emptyTitle', 'suites')}</h2>
+        <p>{t('emptyText', 'suites')}</p>
+        <Link to="/" className={styles.btnBack}>{t('emptyBtn', 'suites')}</Link>
       </div>
     );
   }
@@ -187,17 +197,17 @@ export default function Suites() {
         
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            <span className={styles.titleLas}>Las</span>
-            <span className={styles.titleSuites}>Suites</span>
+            <span className={styles.titleLas}>{t('heroTitleLas', 'suites')}</span>
+            <span className={styles.titleSuites}>{t('heroTitleSuites', 'suites')}</span>
           </h1>
           
           <p className={styles.heroSubtitle}>
-            Cuatro refugios privados frente al Pacífico
+            {t('heroSubtitle', 'suites')}
           </p>
         </div>
 
         <div className={styles.heroScrollIndicator} onClick={() => scrollToNext(-1)}>
-          <span className={styles.scrollText}>DESCUBRIR LAS SUITES</span>
+          <span className={styles.scrollText}>{t('discoverSuites', 'suites')}</span>
           <svg className={styles.scrollArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M7 13l5 5 5-5M12 6v12" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -205,6 +215,12 @@ export default function Suites() {
       </section>
 
       {suites.map((suite, index) => {
+        // Translations Override Lookup
+        const suiteTrans = translations?.suites?.suiteData?.[suite.slug];
+        const suiteName = suiteTrans?.nombre || suite.nombre;
+        const suiteDesc = suiteTrans?.descripcion || suite.descripcion;
+        const suiteVibe = suiteTrans?.vibe || suite.vibe;
+
         // Amenities Logic with fallback
         let amenidades;
         try {
@@ -221,6 +237,8 @@ export default function Suites() {
           amenidades = AMENITIES_FALLBACK[key];
         }
 
+        const suiteAmenities = suiteTrans?.amenidades || amenidades;
+
         return (
           <section 
             key={suite.id} 
@@ -228,7 +246,7 @@ export default function Suites() {
             className={styles.suite}
           >
             <div className={styles.imageWrapper}>
-              <img src={suite.imagen_hero_url} alt={suite.nombre} className={styles.suiteImage} />
+              <img src={suite.imagen_hero_url} alt={suiteName} className={styles.suiteImage} />
               <div className={styles.imageOverlay} />
             </div>
 
@@ -236,7 +254,7 @@ export default function Suites() {
               {/* Left Info Zone (Bottom Aligned) */}
               <div className={styles.infoZone}>
                 <div className={styles.suiteWatermark}>0{index + 1}</div>
-                <h2 className={styles.suiteName}>{suite.nombre}</h2>
+                <h2 className={styles.suiteName}>{suiteName}</h2>
               </div>
 
               {/* Right Content Zone (Floating Content) */}
@@ -247,19 +265,19 @@ export default function Suites() {
                   <div className={styles.priceIntegrated}>
                     <span className={styles.priceCurrency}>USD</span>
                     <PriceTicker value={Math.round(suite.precio_por_noche || 0)} />
-                    <span className={styles.priceNoche}>/ noche</span>
+                    <span className={styles.priceNoche}>{t('perNight', 'suites')}</span>
                   </div>
 
                   {/* BLOQUE 1: DESCRIPCIÓN */}
                   <div className={styles.descriptionWrapper}>
-                    <p className={styles.suiteDesc}>{suite.descripcion}</p>
-                    {suite.vibe && <em className={styles.moodTag}>"{suite.vibe}"</em>}
+                    <p className={styles.suiteDesc}>{suiteDesc}</p>
+                    {suiteVibe && <em className={styles.moodTag}>"{suiteVibe}"</em>}
                   </div>
                   
                   {/* BLOQUE 2: AMENIDADES */}
 
                   <div className={styles.amenitiesGrid}>
-                    {amenidades.slice(0, 4).map((amenity, i) => (
+                    {suiteAmenities.slice(0, 4).map((amenity, i) => (
                       <div key={i} className={styles.amenityCell}>
                         <svg className={styles.amenityIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
                           <circle cx="12" cy="12" r="9" />
@@ -273,11 +291,11 @@ export default function Suites() {
                   {/* BLOQUE 4: BOTONES */}
                   <div className={styles.actionZone}>
                     <Link to={`/reservar/${suite.slug}`} className={styles.btnPrimary}>
-                      Reservar esta suite
+                      {t('reserveThis', 'suites')}
                     </Link>
                     
                     <Link to={`/suites/${suite.slug}`} className={styles.textLink}>
-                      <span>Ver detalles</span>
+                      <span>{t('viewDetails', 'suites')}</span>
                       <svg className={styles.linkArrow} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                         <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>

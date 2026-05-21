@@ -575,3 +575,97 @@
 .mobileLoginLink:hover {
   opacity: 0.8;
 }
+
+/* ── LANGUAGE SELECTOR ── */
+.langSelector {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-smallcaps);
+  font-size: 16px;
+  letter-spacing: 0.15em;
+}
+
+.langBtn {
+  background: none;
+  border: none;
+  color: rgba(250, 246, 238, 0.45);
+  cursor: pointer;
+  padding: 0 2px;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  font-weight: var(--weight-regular);
+  transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+.scrolled .langBtn {
+  color: rgba(250, 246, 238, 0.4);
+}
+
+.langBtn:hover {
+  color: #C9A96E;
+}
+
+.langActive {
+  color: #FAF6EE !important;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.scrolled .langActive {
+  color: #FAF6EE !important;
+}
+
+.langDivider {
+  color: rgba(250, 246, 238, 0.2);
+  font-size: 14px;
+  user-select: none;
+}
+
+.scrolled .langDivider {
+  color: rgba(250, 246, 238, 0.15);
+}
+
+/* Mobile Language Selector */
+.mobileLangSelector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding: 1.5rem 0;
+  width: 100%;
+  max-width: 240px;
+  border-top: 0.5px solid rgba(201, 169, 110, 0.15);
+  border-bottom: 0.5px solid rgba(201, 169, 110, 0.15);
+}
+
+.mobileLangBtn {
+  background: none;
+  border: none;
+  color: rgba(26, 26, 26, 0.45);
+  cursor: pointer;
+  font-family: var(--font-smallcaps);
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.mobileLangBtn:hover {
+  color: var(--color-gold);
+}
+
+.mobileLangActive {
+  color: #1A1A1A !important;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.mobileLangDivider {
+  color: rgba(26, 26, 26, 0.15);
+  font-size: 16px;
+  user-select: none;
+}
+
