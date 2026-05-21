@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import styles from './PaymentStatus.module.css';
+import { getApiUrl } from '../lib/supabase';
 
 export default function Success() {
   const [searchParams] = useSearchParams();
@@ -30,10 +31,7 @@ export default function Success() {
     const sessionId = searchParams.get('session_id');
     if (reservacionId && sessionId) {
       const getConfirmApiUrl = () => {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-          return 'http://localhost:3002/api/confirm-payment';
-        }
-        return '/api/confirm-payment';
+        return getApiUrl('/api/confirm-payment');
       };
 
       fetch(getConfirmApiUrl(), {

@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { getApiUrl } from './apiResolution'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
@@ -76,19 +77,28 @@ export const getSuiteBySlug = async (slug) => {
 export const verificarDisponibilidad = async (
   suiteId, fechaEntrada, fechaSalida
 ) => {
-  // 1. Validar en reservaciones (sin estado cancelada)
+  // 1. Obtener la suite y su número de cuartos
+  const { data: suite, error: suiteError } = await supabase
+    .from('suites')
+    .select('numero_cuartos')
+    .eq('id', suiteId)
+    .single()
+
+  if (suiteError) throw suiteError
+  const maxCuartos = suite?.numero_cuartos || 1
+
+  // 2. Validar en reservaciones (sin estado cancelada)
   const { data: reservaciones, error: resError } = await supabase
     .from('reservaciones')
-    .select('id')
+    .select('fecha_entrada, fecha_salida')
     .eq('suite_id', suiteId)
     .neq('estado', 'cancelada')
     .lt('fecha_entrada', fechaSalida)
     .gt('fecha_salida', fechaEntrada)
 
   if (resError) throw resError
-  if (reservaciones && reservaciones.length > 0) return false
 
-  // 2. Validar en disponibilidad_bloqueada
+  // 3. Validar en disponibilidad_bloqueada
   const { data: bloqueadas, error: blockError } = await supabase
     .from('disponibilidad_bloqueada')
     .select('id')
@@ -98,6 +108,23 @@ export const verificarDisponibilidad = async (
 
   if (blockError) throw blockError
   if (bloqueadas && bloqueadas.length > 0) return false
+
+  // 4. Calcular la ocupación día por día en UTC
+  const inicio = new Date(fechaEntrada + 'T00:00:00Z')
+  const fin = new Date(fechaSalida + 'T00:00:00Z')
+
+  for (let d = new Date(inicio); d < fin; d.setUTCDate(d.getUTCDate() + 1)) {
+    const fechaActualStr = d.toISOString().split('T')[0]
+    
+    // Contar reservaciones activas para esta noche
+    const ocupadas = reservaciones.filter(r => {
+      return r.fecha_entrada <= fechaActualStr && r.fecha_salida > fechaActualStr
+    }).length
+
+    if (ocupadas >= maxCuartos) {
+      return false
+    }
+  }
 
   return true
 }
@@ -118,14 +145,8 @@ export const getMisReservaciones = async (token, clerkUserId, email) => {
   if (!token) {
     throw new Error('Token de autorización es requerido');
   }
-  const getReservationsApiUrl = () => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return 'http://localhost:3002/api/get-reservations';
-    }
-    return '/api/get-reservations';
-  };
   
-  const res = await fetch(getReservationsApiUrl(), {
+  const res = await fetch(getApiUrl('/api/get-reservations'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -144,13 +165,7 @@ export const getMisReservaciones = async (token, clerkUserId, email) => {
 
 // ── Actualizar estado reservación (cancelación por usuario) ──
 export const actualizarEstado = async (id, token) => {
-  const getCancelApiUrl = () => {
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      return 'http://localhost:3002/api/cancel-reservation';
-    }
-    return '/api/cancel-reservation';
-  };
-  const res = await fetch(getCancelApiUrl(), {
+  const res = await fetch(getApiUrl('/api/cancel-reservation'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -196,13 +211,13 @@ export const calcularPrecioEstancia = async (suiteId, fechaEntrada, fechaSalida)
     const desglose = []
     let totalGeneral = 0
 
-    const inicio = new Date(fechaEntrada + 'T00:00:00')
-    const fin = new Date(fechaSalida + 'T00:00:00')
+    const inicio = new Date(fechaEntrada + 'T00:00:00Z')
+    const fin = new Date(fechaSalida + 'T00:00:00Z')
 
     // Iterar día por día (sin incluir la fecha de salida)
-    for (let d = new Date(inicio); d < fin; d.setDate(d.getDate() + 1)) {
+    for (let d = new Date(inicio); d < fin; d.setUTCDate(d.getUTCDate() + 1)) {
       const fechaActualStr = d.toISOString().split('T')[0]
-      const diaSemana = d.getDay() // 0 = Domingo, 6 = Sábado
+      const diaSemana = d.getUTCDay() // 0 = Domingo, 6 = Sábado
 
       // Buscar la primera regla que aplique para este día (ya ordenadas por prioridad desc)
       const reglaAplicable = reglas.find(regla => {
@@ -247,15 +262,15 @@ export const calcularPrecioEstancia = async (suiteId, fechaEntrada, fechaSalida)
       const { data: suite } = await supabase.from('suites').select('precio_por_noche').eq('id', suiteId).single()
       const precioBase = suite?.precio_por_noche || 0
       
-      const inicio = new Date(fechaEntrada + 'T00:00:00')
-      const fin = new Date(fechaSalida + 'T00:00:00')
+      const inicio = new Date(fechaEntrada + 'T00:00:00Z')
+      const fin = new Date(fechaSalida + 'T00:00:00Z')
       const noches = Math.max(0, Math.ceil((fin - inicio) / (1000 * 60 * 60 * 24)))
       const total = noches * precioBase
       const desglose = []
 
       for (let i = 0; i < noches; i++) {
         const d = new Date(inicio)
-        d.setDate(d.getDate() + i)
+        d.setUTCDate(d.getUTCDate() + i)
         desglose.push({
           fecha: d.toISOString().split('T')[0],
           precio: precioBase,
@@ -270,4 +285,6 @@ export const calcularPrecioEstancia = async (suiteId, fechaEntrada, fechaSalida)
     }
   }
 }
+
+export { getApiUrl } from './apiResolution'
 

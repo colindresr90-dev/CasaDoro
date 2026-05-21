@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useAuth, useUser } from '@clerk/clerk-react'
 import { useSuite } from '../hooks/useSuites'
 import { useReservacion } from '../hooks/useReservaciones'
-import { supabase, calcularPrecioEstancia } from '../lib/supabase'
+import { supabase, calcularPrecioEstancia, getApiUrl } from '../lib/supabase'
 import styles from './Reservar.module.css'
 
 export default function Reservar() {
@@ -241,9 +241,7 @@ export default function Reservar() {
 
       reservacionId = reservacion.id
 
-      const stripeApiUrl = import.meta.env.VITE_STRIPE_API_URL || (import.meta.env.DEV 
-        ? 'http://localhost:3002/api/checkout' 
-        : '/api/checkout')
+      const stripeApiUrl = import.meta.env.VITE_STRIPE_API_URL || getApiUrl('/api/checkout')
 
       const response = await fetch(stripeApiUrl, {
         method: 'POST',

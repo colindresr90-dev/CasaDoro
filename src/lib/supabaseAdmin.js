@@ -1,10 +1,7 @@
-import { supabase } from './supabase'
+import { supabase, getApiUrl } from './supabase'
 
 const getAdminApiUrl = () => {
-  if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:3002/api/admin';
-  }
-  return '/api/admin';
+  return getApiUrl('/api/admin');
 };
 
 const callAdminApi = async (token, action, params = {}) => {
